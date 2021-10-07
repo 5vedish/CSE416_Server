@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Question {
+  id     Int     @default(autoincrement()) @id
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int     
+  type String
+  question String
+  choices String[]
+  answer String
+}
+
+model User {
+  id      Int      @default(autoincrement()) @id
+  email   String   @unique
+  name    String
+  question_bank   Question[]
+  flash_cards FlashCard[]
+}
+
+model FlashCard{
+  id     Int     @default(autoincrement()) @id
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int     
+  front String
+  back String
+}

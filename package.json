@@ -1,6 +1,7 @@
 {
   "main": "build/index.js",
   "scripts": {
+    "build": "npx prisma db push",
     "postinstall": "tsc",
     "start": "node build/index.js",
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",

@@ -10,11 +10,14 @@ const prisma = new PrismaClient();
 app.use(
   cors({
     origin: "https://cse416democlient.herokuapp.com",
+    optionsSuccessStatus: 200,
     credentials: true,
   })
 );
 
 app.options("*", cors);
+
+app.use(express.json());
 
 app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 

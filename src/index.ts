@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 
 app.use(
   cors({
-    origin: "https://cse416democlient.herokuapp.com",
+    origin: "*",
     credentials: true,
   })
 );

@@ -7,12 +7,7 @@ const PORT = process.env.PORT || 8080;
 
 const prisma = new PrismaClient();
 
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 

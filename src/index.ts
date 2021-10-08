@@ -7,7 +7,14 @@ const PORT = process.env.PORT || 8080;
 
 const prisma = new PrismaClient();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://cse416democlient.herokuapp.com",
+    credentials: true,
+  })
+);
+
+app.options("*", cors);
 
 app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 

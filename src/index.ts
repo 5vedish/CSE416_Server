@@ -25,7 +25,7 @@ app.post("/test", async (req, res) => {
   res.status(200).json({
     prisma: await prisma.user.create({
       data: {
-        email: "penis@gmail.com",
+        email: "peni@gmail.com",
         name: "kyle",
         question_bank: {
           create: [],

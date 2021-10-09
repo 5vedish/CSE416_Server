@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { PrismaClient } from ".prisma/client";
+
 const app = express();
 
 const PORT = process.env.PORT || 8080;
@@ -10,7 +11,6 @@ const prisma = new PrismaClient();
 app.use(
   cors({
     origin: "https://cse416democlient.herokuapp.com",
-    optionsSuccessStatus: 200,
     credentials: true,
   })
 );
@@ -21,15 +21,13 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 
-app.post("/test", async (req, res) => {
+app.post("/create_question", async (req, res) => {
   res.status(200).json({
     prisma: await prisma.user.create({
       data: {
-        email: "peni@gmail.com",
-        name: "kyle",
-        question_bank: {
-          create: [],
-        },
+        question: "How does this question look?",
+        choices: ["Good!", "Bad.", "~Smexy~", "No comment..."],
+        answerIndex: 0,
       },
     }),
   });

@@ -23,7 +23,7 @@ app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 
 app.post("/create_question", async (req, res) => {
   res.status(200).json({
-    prisma: await prisma.user.create({
+    prisma: await prisma.question.create({
       data: {
         question: "How does this question look?",
         choices: ["Good!", "Bad.", "~Smexy~", "No comment..."],

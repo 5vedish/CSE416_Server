@@ -37,18 +37,15 @@ questionRouter.get("/:id", async (req, res) => {
 questionRouter.put("/:id", async (req, res) => {
   const numericId = parseInt(req.params.id);
 
-  const { question, choices, correctChoice } = req.body;
-  const correctChoiceIndex = parseInt(correctChoice);
+  const { question } = req.body;
 
-  const result = await db.question
+  await db.question
     .update({
       where: {
         id: numericId,
       },
       data: {
-        question,
-        choices,
-        correctChoice: correctChoiceIndex,
+        question
       },
     })
     .catch((e) => {
@@ -62,7 +59,7 @@ questionRouter.put("/:id", async (req, res) => {
 questionRouter.delete("/:id", async (req, res) => {
   const numericId = parseInt(req.params.id);
 
-  const questionToCheck = await db.question
+  await db.question
     .delete({
       where: { id: numericId },
     })

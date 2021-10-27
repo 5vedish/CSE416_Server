@@ -10,9 +10,26 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id Int @id @default(autoincrement())
+  displayName String
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  passwordResets PasswordReset[] @relation("PasswordResets")
+}
+
 model Question {
   id Int @id @default(autoincrement())
   question String
   choices String[]
   correctChoice Int
+}
+
+model PasswordReset {
+  id Int @id @default(autoincrement())
+  token String @unique
+  createdAt DateTime @default(now())
+  userId Int
+  user User @relation("PasswordResets", fields: [userId], references: [id])
 }

@@ -15,7 +15,6 @@ Desktop.ini
 
 # npm
 node_modules
-package-lock.json
 *.log
 *.gz
 
@@ -31,3 +30,6 @@ dist
 
 # Keep environment variables out of version control
 .env
+
+# Prisma migrations
+prisma/migrations

@@ -9,16 +9,10 @@
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
-            "*": [
-                "node_modules/*"
-            ]
+            "*": ["node_modules/*"]
         },
         "strict": true,
-        "lib": [
-            "esnext"
-        ],
+        "lib": ["esnext"]
     },
-    "include": [
-        "src/**/*"
-    ]
+    "include": ["src/**/*"]
 }

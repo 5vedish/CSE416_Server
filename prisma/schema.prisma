@@ -16,6 +16,7 @@ model User {
   email String @unique
   password String
   createdAt DateTime @default(now())
+  passwordResets PasswordReset[] @relation("PasswordResets")
 }
 
 model Question {
@@ -28,5 +29,7 @@ model Question {
 model PasswordReset {
   id Int @id @default(autoincrement())
   token String @unique
-  createdAt DateTime
+  createdAt DateTime @default(now())
+  userId Int
+  user User @relation("PasswordResets", fields: [userId], references: [id])
 }

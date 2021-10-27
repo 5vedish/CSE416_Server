@@ -17,6 +17,14 @@ model User {
   password String
   createdAt DateTime @default(now())
   passwordResets PasswordReset[] @relation("PasswordResets")
+  sessions Session[] @relation("Sessions")
+}
+
+model Session {
+  id  String @id
+  userId Int
+  user User @relation("Sessions", fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Question {
@@ -33,3 +41,5 @@ model PasswordReset {
   userId Int
   user User @relation("PasswordResets", fields: [userId], references: [id])
 }
+
+

@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import { questionRouter } from './routes/question';
-import { passwordResetRouter } from './routes/passwordReset';
+import { sessionRouter } from './routes/session';
 
 const app = express();
 const port = process.env.PORT || 8080; // default port to listen
@@ -17,7 +17,7 @@ app.options('*', cors);
 
 app.use(express.json());
 app.use('/questions', questionRouter);
-app.use('/password_reset', passwordResetRouter);
+app.use('/sessions', sessionRouter);
 
 // start the Express server
 app.listen(port, () => {

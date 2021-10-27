@@ -14,4 +14,18 @@ const verifyResetRequest = (createdAt: Date) => {
     return isFuture(add(createdAt, { days: 1 }));
 };
 
-export { hashPassword, checkPassword };
+const verifySession = (createdAt: Date) => {
+    return isFuture(add(createdAt, { hours: 1 }));
+};
+
+const generateSessionExpiry = (createdAt: Date) => {
+    return add(createdAt, { hours: 1 });
+};
+
+export {
+    hashPassword,
+    checkPassword,
+    verifyResetRequest,
+    verifySession,
+    generateSessionExpiry,
+};

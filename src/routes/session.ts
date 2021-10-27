@@ -1,7 +1,11 @@
 import express from 'express';
 import { db } from '../db';
-import { hashPassword, checkPassword, generateSessionExpiry } from '../utils';
-import { nanoid } from nanoid;
+import {
+    hashPassword,
+    checkPassword,
+    generateSessionExpiry,
+} from '../utils/auth';
+import { nanoid } from 'nanoid';
 
 const sessionRouter = express.Router();
 
@@ -12,8 +16,14 @@ sessionRouter.post('/', async (req, res) => {
         where: { email },
     });
 
+    if (!user) {
+        res.sendStatus(400);
+        return;
+    }
+
     if (!checkPassword(password, user.password)) {
-        res.sendStatus.json(400);
+        res.sendStatus(400);
+        return;
     }
 
     const sessionId = nanoid();
@@ -26,10 +36,12 @@ sessionRouter.post('/', async (req, res) => {
     });
 
     res.cookie('sessionId', sessionId, {
-        httpOnly,
-        secure,
-        sameSite,
+        httpOnly: true,
+        secure: true,
+        sameSite: true,
         expires: generateSessionExpiry(session.createdAt),
     });
     res.sendStatus(200);
 });
+
+export { sessionRouter };

@@ -24,6 +24,7 @@
         "@prisma/client": "^3.2.1",
         "cors": "^2.8.5",
         "express": "^4.17.1",
+        "postmark": "^2.7.8",
         "prisma": "^3.2.1"
     },
     "cacheDirectories": [
@@ -33,7 +34,7 @@
         "arrowParens": "always",
         "trailingComma": "all",
         "singleQuote": true,
-        "semi": false,
+        "semi": true,
         "tabWidth": 4
     },
     "lint-staged": {

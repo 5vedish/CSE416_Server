@@ -1,12 +1,12 @@
-import express from 'express'
-import { db } from '../db'
+import express from 'express';
+import { db } from '../db';
 
-const questionRouter = express.Router()
+const questionRouter = express.Router();
 
 questionRouter.post('/', async (req, res) => {
-    const { question, choices, correctChoice } = req.body
+    const { question, choices, correctChoice } = req.body;
 
-    const correctChoiceIndex = parseInt(correctChoice)
+    const correctChoiceIndex = parseInt(correctChoice);
 
     const result = await db.question.create({
         data: {
@@ -14,30 +14,30 @@ questionRouter.post('/', async (req, res) => {
             choices,
             correctChoice: correctChoiceIndex,
         },
-    })
+    });
 
-    res.json({ id: result.id })
-})
+    res.json({ id: result.id });
+});
 
 questionRouter.get('/:id', async (req, res) => {
-    const numericId = parseInt(req.params.id)
+    const numericId = parseInt(req.params.id);
 
     const questionToCheck = await db.question.findFirst({
         where: { id: numericId },
-    })
+    });
 
     if (!questionToCheck) {
-        res.status(404)
-        return
+        res.status(404);
+        return;
     }
 
-    res.json(questionToCheck)
-})
+    res.json(questionToCheck);
+});
 
 questionRouter.put('/:id', async (req, res) => {
-    const numericId = parseInt(req.params.id)
+    const numericId = parseInt(req.params.id);
 
-    const { question } = req.body
+    const { question } = req.body;
 
     await db.question
         .update({
@@ -49,26 +49,26 @@ questionRouter.put('/:id', async (req, res) => {
             },
         })
         .catch((e) => {
-            res.sendStatus(404)
-            return
-        })
+            res.sendStatus(404);
+            return;
+        });
 
-    res.sendStatus(200)
-})
+    res.sendStatus(200);
+});
 
 questionRouter.delete('/:id', async (req, res) => {
-    const numericId = parseInt(req.params.id)
+    const numericId = parseInt(req.params.id);
 
     await db.question
         .delete({
             where: { id: numericId },
         })
         .catch((e) => {
-            res.sendStatus(404)
-            return
-        })
+            res.sendStatus(404);
+            return;
+        });
 
-    res.sendStatus(200)
-})
+    res.sendStatus(200);
+});
 
-export { questionRouter }
+export { questionRouter };

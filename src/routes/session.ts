@@ -41,6 +41,7 @@ sessionRouter.post('/', async (req, res) => {
         sameSite: true,
         expires: generateSessionExpiry(session.createdAt),
     });
+
     res.sendStatus(200);
 });
 

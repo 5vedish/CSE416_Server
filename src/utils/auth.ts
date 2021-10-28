@@ -14,4 +14,4 @@ const verifyResetRequest = (createdAt: Date) => {
     return isFuture(add(createdAt, { days: 1 }));
 };
 
-export { hashPassword, checkPassword };
+export { hashPassword, checkPassword, verifyResetRequest };

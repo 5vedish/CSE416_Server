@@ -37,7 +37,9 @@ questionRouter.get('/:id', async (req, res) => {
 questionRouter.put('/:id', async (req, res) => {
     const numericId = parseInt(req.params.id);
 
-    const { question } = req.body;
+    const { question, choices, correctChoice } = req.body;
+
+    const correctChoiceIndex = parseInt(correctChoice);
 
     await db.question
         .update({
@@ -46,6 +48,8 @@ questionRouter.put('/:id', async (req, res) => {
             },
             data: {
                 question,
+                choices,
+                correctChoice: correctChoiceIndex,
             },
         })
         .catch((e: any) => {

@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import { questionRouter } from './routes/question';
-import { sessionRouter } from './routes/session';
+import { sessionRouter } from './routes/sessions';
 import { userRouter } from './routes/user';
 
 const app = express();

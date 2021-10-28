@@ -27,7 +27,7 @@ questionRouter.get('/:id', async (req, res) => {
     });
 
     if (!questionToCheck) {
-        res.status(404);
+        res.sendStatus(404);
         return;
     }
 

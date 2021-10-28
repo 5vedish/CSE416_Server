@@ -13,6 +13,9 @@ export const authHandler = async (
 
     const session = await db.session.findUnique({
         where: { id: req.cookies.sessionId },
+        include: {
+            user: true,
+        },
     });
 
     if (!session) {

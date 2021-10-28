@@ -48,7 +48,7 @@ questionRouter.put('/:id', async (req, res) => {
                 question,
             },
         })
-        .catch((e) => {
+        .catch((e: any) => {
             res.sendStatus(404);
             return;
         });
@@ -63,7 +63,7 @@ questionRouter.delete('/:id', async (req, res) => {
         .delete({
             where: { id: numericId },
         })
-        .catch((e) => {
+        .catch((e: any) => {
             res.sendStatus(404);
             return;
         });

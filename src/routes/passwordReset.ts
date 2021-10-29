@@ -19,7 +19,6 @@ passwordResetRouter.post('/', async (req, res) => {
         return;
     }
     const resetToken = nanoid();
-
     await db.user.update({
         where: { id: user.id },
         data: {

@@ -37,7 +37,7 @@ sessionRouter.post('/', async (req, res) => {
         .cookie('sessionId', sessionId, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development',
-            sameSite: 'none',
+            sameSite: 'lax',
             expires: generateSessionExpiry(session.createdAt),
             domain: '.qiz-client.herokuapp.com',
         })

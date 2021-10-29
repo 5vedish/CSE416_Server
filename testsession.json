@@ -1,0 +1,11 @@
+{
+    "cookies": {
+        "sessionId": {
+            "value": "OkbQs4tD8-jMaS-zopaD9",
+            "path": "/",
+            "Expires": "Fri, 29 Oct 2021 05:47:49 GMT",
+            "HttpOnly": true,
+            "SameSite": "Lax"
+        }
+    }
+}

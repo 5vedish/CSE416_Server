@@ -35,12 +35,12 @@ passwordResetRouter.post('/', async (req, res) => {
         To: user.email,
         TemplateAlias: 'password-reset',
         TemplateModel: {
-            product_url: 'https://qiz-client.herokuapp.com',
+            product_url: process.env.SERVER_ORIGIN,
             product_name: 'Qiz',
-            action_url: `https://qiz-client.herokuapp.com/reset_password?token=${resetToken}`,
+            action_url: `${process.env.SERVER_ORIGIN}/reset_password?token=${resetToken}`,
         },
     });
-    res.json({ token: resetToken });
+    res.sendStatus(200);
 });
 
 passwordResetRouter.put('/', async (req, res) => {

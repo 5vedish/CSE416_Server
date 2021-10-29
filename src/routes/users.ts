@@ -8,6 +8,8 @@ const userRouter = express.Router();
 userRouter.post('/', async (req, res) => {
     const { displayName, email, password } = req.body;
 
+    console.log(req.body);
+
     await db.user.create({
         data: {
             displayName: displayName,

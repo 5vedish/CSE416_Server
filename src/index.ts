@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
+import { passwordResetRouter } from './routes/passwordReset';
 import { questionRouter } from './routes/questions';
 import { sessionRouter } from './routes/sessions';
 import { meRouter } from './routes/me';
@@ -31,6 +32,7 @@ app.use('/questions', questionRouter);
 app.use('/users', userRouter);
 app.use('/sessions', sessionRouter);
 app.use('/me', meRouter);
+app.use('/password_resets', passwordResetRouter);
 
 app.use(errHandler);
 

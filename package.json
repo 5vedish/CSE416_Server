@@ -8,7 +8,7 @@
         "dev-w": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
         "dev-l": "NODE_ENV=development nodemon --watch './**/*.ts' --transpile-only src/index.ts",
         "deploy": "git add . && git commit -m Heroku && git push heroku master",
-        "prepare": "husky install"
+        "prepare": "husky install && npx prisma db push"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.2",

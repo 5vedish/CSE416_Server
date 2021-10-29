@@ -3,10 +3,10 @@
     "scripts": {
         "build": "npx prisma db push",
         "postinstall": "tsc",
-        "start": "node dist/index.js",
+        "start": "NODE_ENV=production node dist/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev-w": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
-        "dev-l": "nodemon --watch './**/*.ts' --transpile-only src/index.ts",
+        "dev-w": "NODE_ENV=development ts-node-dev --respawn --pretty --transpile-only src/index.ts",
+        "dev-l": "NODE_ENV=development nodemon --watch './**/*.ts' --transpile-only src/index.ts",
         "deploy": "git add . && git commit -m Heroku && git push heroku master",
         "prepare": "husky install"
     },

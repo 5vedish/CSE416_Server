@@ -4,6 +4,11 @@ import { db } from '../db';
 const questionRouter = express.Router();
 
 questionRouter.post('/', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
     const { question, choices, correctChoice } = req.body;
 
     const correctChoiceIndex = parseInt(correctChoice);
@@ -13,6 +18,7 @@ questionRouter.post('/', async (req, res) => {
             question,
             choices,
             correctChoice: correctChoiceIndex,
+            userId: user.id,
         },
     });
 
@@ -20,10 +26,18 @@ questionRouter.post('/', async (req, res) => {
 });
 
 questionRouter.get('/:id', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
     const questionToCheck = await db.question.findFirst({
-        where: { id: numericId },
+        where: {
+            id: numericId,
+            userId: user.id,
+        },
     });
 
     if (!questionToCheck) {
@@ -35,6 +49,11 @@ questionRouter.get('/:id', async (req, res) => {
 });
 
 questionRouter.put('/:id', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
     const { question, choices, correctChoice } = req.body;
@@ -45,6 +64,7 @@ questionRouter.put('/:id', async (req, res) => {
         .update({
             where: {
                 id: numericId,
+                userId: user.id,
             },
             data: {
                 question,
@@ -61,11 +81,19 @@ questionRouter.put('/:id', async (req, res) => {
 });
 
 questionRouter.delete('/:id', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
     await db.question
         .delete({
-            where: { id: numericId },
+            where: {
+                id: numericId,
+                userId: user.id,
+            },
         })
         .catch((e: any) => {
             res.sendStatus(404);

@@ -18,6 +18,7 @@ model User {
   createdAt DateTime @default(now())
   passwordResets PasswordReset[] @relation("PasswordResets")
   sessions Session[] @relation("Sessions")
+  question Question? @relation("Question") // TEMPORARY - REMOVE AFTER WE INTRODUCE QUIZZES/PLATFORMS
 }
 
 model Session {
@@ -32,6 +33,8 @@ model Question {
   question String
   choices String[]
   correctChoice Int
+  userId Int
+  user User @relation("Question", fields: [userId], references: [id])
 }
 
 model PasswordReset {

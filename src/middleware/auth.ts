@@ -13,10 +13,13 @@ export const authHandler = async (
 
     const session = await db.session.findUnique({
         where: { id: req.cookies.sessionId },
+        include: {
+            user: true,
+        },
     });
 
     if (!session) {
-        return res.sendStatus(404);
+        return res.sendStatus(401);
     }
 
     if (differenceInDays(new Date(), session.createdAt) >= 1) {

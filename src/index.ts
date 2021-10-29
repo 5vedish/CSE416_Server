@@ -4,9 +4,10 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-import { questionRouter } from './routes/question';
+import { questionRouter } from './routes/questions';
 import { sessionRouter } from './routes/sessions';
-import { userRouter } from './routes/user';
+import { meRouter } from './routes/me';
+import { userRouter } from './routes/users';
 import { errHandler } from './middleware/err';
 import { authHandler } from './middleware/auth';
 
@@ -27,8 +28,9 @@ app.use(cookieParser());
 app.use(authHandler);
 
 app.use('/questions', questionRouter);
-app.use('/user', userRouter);
+app.use('/users', userRouter);
 app.use('/sessions', sessionRouter);
+app.use('/me', meRouter);
 
 app.use(errHandler);
 

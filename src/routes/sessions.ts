@@ -39,7 +39,7 @@ sessionRouter.post('/', async (req, res) => {
             secure: process.env.NODE_ENV !== 'development',
             sameSite: 'none',
             expires: generateSessionExpiry(session.createdAt),
-            domain: '.herokuapp.com',
+            domain: 'qiz-client.herokuapp.com',
         })
         .json({
             displayName: user.displayName,

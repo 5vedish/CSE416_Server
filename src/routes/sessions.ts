@@ -16,7 +16,7 @@ sessionRouter.post('/', async (req, res) => {
         return res.sendStatus(400);
     }
 
-    if (!checkPassword(password, user.password)) {
+    if (!(await checkPassword(password, user.password))) {
         return res.sendStatus(400);
     }
 

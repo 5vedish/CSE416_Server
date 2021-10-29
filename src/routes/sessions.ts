@@ -1,6 +1,10 @@
 import express from 'express';
 import { db } from '../db';
-import { checkPassword, generateSessionExpiry } from '../utils/auth';
+import {
+    hashPassword,
+    checkPassword,
+    generateSessionExpiry,
+} from '../utils/auth';
 import { nanoid } from 'nanoid';
 
 const sessionRouter = express.Router();

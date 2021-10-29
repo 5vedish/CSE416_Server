@@ -19,7 +19,7 @@ export const authHandler = async (
     });
 
     if (!session) {
-        return res.sendStatus(404);
+        return res.sendStatus(401);
     }
 
     if (differenceInDays(new Date(), session.createdAt) >= 1) {

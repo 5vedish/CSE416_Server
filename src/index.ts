@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 import { questionRouter } from './routes/question';
 import { sessionRouter } from './routes/session';
+import { meRouter } from './routes/me';
 import { userRouter } from './routes/user';
 import { errHandler } from './middleware/err';
 import { authHandler } from './middleware/auth';
@@ -29,6 +30,7 @@ app.use(authHandler);
 app.use('/questions', questionRouter);
 app.use('/user', userRouter);
 app.use('/sessions', sessionRouter);
+app.use('/me', meRouter);
 
 app.use(errHandler);
 

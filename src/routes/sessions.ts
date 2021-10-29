@@ -40,8 +40,10 @@ sessionRouter.post('/', async (req, res) => {
             sameSite: 'lax',
             expires: generateSessionExpiry(session.createdAt),
         })
-        .json(user)
-        .sendStatus(200);
+        .json({
+            displayName: user.displayName,
+            email: user.email,
+        });
 });
 
 export { sessionRouter };

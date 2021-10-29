@@ -3,7 +3,7 @@ import { hash, compare } from 'bcryptjs';
 import { add, isFuture } from 'date-fns';
 
 const hashPassword = async (password: string) => {
-    return hash(password, 16);
+    return hash(password, 12);
 };
 
 const checkPassword = async (password: string, hash: string) => {

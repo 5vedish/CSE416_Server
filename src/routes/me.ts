@@ -22,6 +22,7 @@ meRouter.delete('/sessions', async (req, res) => {
     }
 
     await db.session.delete({ where: { id: req.session.id } });
+    res.clearCookie('sessionId');
     return res.sendStatus(200);
 });
 

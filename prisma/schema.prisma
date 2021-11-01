@@ -11,22 +11,44 @@ generator client {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  displayName String
-  email String @unique
-  password String
+  id             Int             @id @default(autoincrement())
+  displayName    String
+  email          String          @unique
+  password       String
+  createdAt      DateTime        @default(now())
+  passwordResets PasswordReset[] @relation("PasswordResets")
+  sessions       Session[]       @relation("Sessions")
+  question       Question?       @relation("Question") // TEMPORARY - REMOVE AFTER WE INTRODUCE QUIZZES/PLATFORMS
+}
+
+model Session {
+  id        String   @id
+  userId    Int
+  user      User     @relation("Sessions", fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
 
 model Question {
-  id Int @id @default(autoincrement())
-  question String
-  choices String[]
+  id            Int      @id @default(autoincrement())
+  question      String
+  choices       String[]
   correctChoice Int
+  userId        Int      @unique
+  user          User     @relation("Question", fields: [userId], references: [id])
+}
+
+model PasswordReset {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  createdAt DateTime @default(now())
+  userId    Int
+  user      User     @relation("PasswordResets", fields: [userId], references: [id])
 }
 
 model PasswordReset {
   id Int @id @default(autoincrement())
   token String @unique
-  createdAt DateTime
+  createdAt DateTime @default(now())
+  userId Int
+  user User @relation("PasswordResets", fields: [userId], references: [id])
 }

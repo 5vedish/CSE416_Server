@@ -10,5 +10,5 @@
         "strict": true,
         "lib": ["esnext"]
     },
-    "include": ["src/**/*"]
+    "include": ["src/**/*", "index.d.ts"]
 }

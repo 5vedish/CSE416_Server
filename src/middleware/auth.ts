@@ -1,6 +1,7 @@
 import { differenceInDays } from 'date-fns';
 import { NextFunction, Request, Response } from 'express';
 import { db } from '../db';
+import { verifySession } from '../utils/auth';
 
 export const authHandler = async (
     req: Request,
@@ -22,7 +23,7 @@ export const authHandler = async (
         return res.sendStatus(401);
     }
 
-    if (differenceInDays(new Date(), session.createdAt) >= 1) {
+    if (!verifySession(session.createdAt)) {
         await db.session.delete({ where: { id: session.id } });
 
         return res.sendStatus(410);

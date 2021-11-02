@@ -15,12 +15,8 @@ import { authHandler } from './middleware/auth';
 const app = express();
 let port = process.env.PORT || 8080; // default port to listen
 
-if (typeof port === 'string') {
-    port = parseInt(port) + 1;
-}
-
 const corsOptions = {
-    origin: process.env.CLIENT_ORIGIN! + process.env.PORT!,
+    origin: process.env.CLIENT_ORIGIN!,
     credentials: true,
 };
 

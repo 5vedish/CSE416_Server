@@ -4,6 +4,11 @@ import { db } from '../db';
 const questionRouter = express.Router();
 
 questionRouter.post('/', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
     const { question, choices, correctChoice } = req.body;
 
     const correctChoiceIndex = parseInt(correctChoice);
@@ -13,6 +18,7 @@ questionRouter.post('/', async (req, res) => {
             question,
             choices,
             correctChoice: correctChoiceIndex,
+            userId: user.id,
         },
     });
 
@@ -20,35 +26,53 @@ questionRouter.post('/', async (req, res) => {
 });
 
 questionRouter.get('/:id', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
     const questionToCheck = await db.question.findFirst({
-        where: { id: numericId },
+        where: {
+            id: numericId,
+            userId: user.id,
+        },
     });
 
     if (!questionToCheck) {
-        res.status(404);
-        return;
+        return res.sendStatus(404);
     }
 
     res.json(questionToCheck);
 });
 
 questionRouter.put('/:id', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
-    const { question } = req.body;
+    const { question, choices, correctChoice } = req.body;
+
+    const correctChoiceIndex = parseInt(correctChoice);
 
     await db.question
-        .update({
+        .updateMany({
             where: {
                 id: numericId,
+                userId: user.id,
             },
             data: {
                 question,
+                choices,
+                correctChoice: correctChoiceIndex,
             },
         })
-        .catch((e) => {
+        .catch((e: any) => {
+            console.log(e);
             res.sendStatus(404);
             return;
         });
@@ -57,13 +81,23 @@ questionRouter.put('/:id', async (req, res) => {
 });
 
 questionRouter.delete('/:id', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
+    console.log(req.params, req.session);
     const numericId = parseInt(req.params.id);
 
     await db.question
-        .delete({
-            where: { id: numericId },
+        .deleteMany({
+            where: {
+                id: numericId,
+                userId: user.id,
+            },
         })
-        .catch((e) => {
+        .catch((e: any) => {
+            console.log(e);
             res.sendStatus(404);
             return;
         });

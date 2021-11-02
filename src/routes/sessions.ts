@@ -17,13 +17,11 @@ sessionRouter.post('/', async (req, res) => {
     });
 
     if (!user) {
-        res.sendStatus(400);
-        return;
+        return res.sendStatus(400);
     }
 
-    if (!checkPassword(password, user.password)) {
-        res.sendStatus(400);
-        return;
+    if (!(await checkPassword(password, user.password))) {
+        return res.sendStatus(400);
     }
 
     const sessionId = nanoid();
@@ -35,14 +33,18 @@ sessionRouter.post('/', async (req, res) => {
         },
     });
 
-    res.cookie('sessionId', sessionId, {
-        httpOnly: true,
-        secure: true,
-        sameSite: true,
-        expires: generateSessionExpiry(session.createdAt),
-    });
-
-    res.sendStatus(200);
+    return res
+        .cookie('sessionId', sessionId, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'development',
+            sameSite: 'lax',
+            expires: generateSessionExpiry(session.createdAt),
+            domain: 'qiz-client.herokuapp.com',
+        })
+        .json({
+            displayName: user.displayName,
+            email: user.email,
+        });
 });
 
 export { sessionRouter };

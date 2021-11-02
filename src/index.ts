@@ -13,7 +13,11 @@ import { errHandler } from './middleware/err';
 import { authHandler } from './middleware/auth';
 
 const app = express();
-const port = process.env.PORT || 8080; // default port to listen
+let port = process.env.PORT || 8080; // default port to listen
+
+if (typeof port === 'string') {
+    port = parseInt(port) + 1;
+}
 
 const corsOptions = {
     origin: process.env.CLIENT_ORIGIN!,

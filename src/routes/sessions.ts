@@ -36,7 +36,6 @@ sessionRouter.post('/', async (req, res) => {
     return res
         .cookie('sessionId', sessionId, {
             httpOnly: true,
-            sameSite: 'none',
             expires: generateSessionExpiry(session.createdAt),
         })
         .json({

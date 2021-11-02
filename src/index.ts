@@ -20,16 +20,15 @@ if (typeof port === 'string') {
 }
 
 const corsOptions = {
-    origin: process.env.CLIENT_ORIGIN!,
+    origin: process.env.CLIENT_ORIGIN! + process.env.PORT!,
     credentials: true,
 };
 
+app.set('trust proxy', 1);
 app.use(cors(corsOptions));
 app.options('*', cors);
 
 app.use(express.json());
-
-app.set('trust proxy', 1);
 
 app.use(cookieParser());
 app.use(authHandler);

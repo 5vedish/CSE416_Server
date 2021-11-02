@@ -1,9 +1,16 @@
+import 'express-async-errors';
+
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
-import { questionRouter } from './routes/question';
-import { sessionRouter } from './routes/session';
-import { userRouter } from './routes/user';
+import { passwordResetRouter } from './routes/passwordReset';
+import { questionRouter } from './routes/questions';
+import { sessionRouter } from './routes/sessions';
+import { meRouter } from './routes/me';
+import { userRouter } from './routes/users';
+import { errHandler } from './middleware/err';
+import { authHandler } from './middleware/auth';
 
 const app = express();
 const port = process.env.PORT || 8080; // default port to listen
@@ -13,15 +20,22 @@ const corsOptions = {
     credentials: true,
 };
 
-console.log(corsOptions);
-
+app.set('trust proxy', 1);
 app.use(cors(corsOptions));
 app.options('*', cors);
 
 app.use(express.json());
+
+app.use(cookieParser());
+app.use(authHandler);
+
 app.use('/questions', questionRouter);
-app.use('/user', userRouter);
+app.use('/users', userRouter);
 app.use('/sessions', sessionRouter);
+app.use('/me', meRouter);
+app.use('/password_resets', passwordResetRouter);
+
+app.use(errHandler);
 
 // start the Express server
 app.listen(port, () => {

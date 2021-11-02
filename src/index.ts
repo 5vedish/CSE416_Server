@@ -13,6 +13,8 @@ const corsOptions = {
     credentials: true,
 };
 
+console.log(corsOptions);
+
 app.use(cors(corsOptions));
 app.options('*', cors);
 

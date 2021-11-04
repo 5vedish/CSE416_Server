@@ -2,7 +2,7 @@
     "main": "dist/index.js",
     "scripts": {
         "build": "npx prisma db push",
-        "postinstall": "tsc",
+        "postinstall": "npx prisma db push && tsc",
         "start": "NODE_ENV=production node dist/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev-w": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
@@ -21,7 +21,6 @@
         "nodemon": "^2.0.14",
         "prettier": "^2.4.1",
         "ts-node": "^10.2.1",
-        "ts-node-dev": "^1.1.8",
         "typescript": "^4.4.3"
     },
     "dependencies": {

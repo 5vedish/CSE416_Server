@@ -35,15 +35,15 @@ sessionRouter.post('/', async (req, res) => {
 
     return res
         .cookie('sessionId', sessionId, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== 'development',
-            sameSite: 'lax',
+            sameSite: 'strict',
+            secure: false,
             expires: generateSessionExpiry(session.createdAt),
-            domain: 'qiz-client.herokuapp.com',
         })
         .json({
-            displayName: user.displayName,
-            email: user.email,
+            user: {
+                displayName: user.displayName,
+                email: user.email,
+            },
         });
 });
 

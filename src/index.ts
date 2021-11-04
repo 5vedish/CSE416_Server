@@ -13,14 +13,14 @@ import { errHandler } from './middleware/err';
 import { authHandler } from './middleware/auth';
 
 const app = express();
-const port = process.env.PORT || 8080; // default port to listen
+let port = process.env.PORT || 8080; // default port to listen
 
 const corsOptions = {
     origin: process.env.CLIENT_ORIGIN!,
     credentials: true,
 };
 
-app.set('trust proxy', 1);
+app.enable('trust proxy');
 app.use(cors(corsOptions));
 app.options('*', cors);
 

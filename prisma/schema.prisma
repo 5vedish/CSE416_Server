@@ -38,7 +38,7 @@ model Platform {
   quizzes Quiz[] @relation("Quizzes")
   owner   User   @relation("OwnedPlatforms", fields: [ownerId], references: [id])
   ownerId Int
-  rating  Int
+  rating  Int @default(0)
 }
 
 enum Difficulty {

@@ -29,18 +29,38 @@ platformsRouter.get('/:id', async (req, res) => {
     const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
-    const platformToCheck = await db.platform.findFirst({
+    const platform = await db.platform.findFirst({
         where: {
             id: numericId,
             ownerId: user.id,
         },
+        include: {
+            owner: {
+                select: {
+                    displayName: true,
+                },
+            },
+            quizzes: {
+                select: {
+                    id: true,
+                    difficulty: true,
+                    maxTime: true,
+                    title: true,
+                },
+            },
+        },
     });
+    console.log(platform);
 
-    if (!platformToCheck) {
+    if (!platform) {
         return res.sendStatus(404);
     }
 
-    res.json(platformToCheck);
+    res.json({
+        title: platform.title,
+        owner: platform.owner.displayName,
+        quizzes: platform.quizzes,
+    });
 });
 
 platformsRouter.put('/:id', async (req, res) => {

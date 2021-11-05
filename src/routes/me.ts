@@ -25,6 +25,7 @@ meRouter.get('/platform', async (req, res) => {
     const platform = await db.platform.findFirst({
         where: { ownerId: req.session.user.id },
     });
+    console.log(platform);
     if (!platform) {
         return res.sendStatus(404);
     }

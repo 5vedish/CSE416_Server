@@ -50,7 +50,7 @@ quizzesRouter.put('/', async (req, res) => {
         return res.sendStatus(401);
     }
 
-    const { quizId, title, difficulty } = req.body;
+    const { quizId, title, difficulty, totalTime } = req.body;
 
     console.log(quizId, title);
 
@@ -62,6 +62,7 @@ quizzesRouter.put('/', async (req, res) => {
             data: {
                 title: title,
                 difficulty: difficulty,
+                maxTime: totalTime,
             },
         })
         .catch((e: any) => {

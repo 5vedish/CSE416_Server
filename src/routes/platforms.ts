@@ -9,14 +9,12 @@ platformsRouter.post('/', async (req, res) => {
     }
 
     const { user } = req.session;
-    const { title, rating } = req.body;
-    const ratingValue = parseInt(rating);
+    const { title } = req.body;
 
     const result = await db.platform.create({
         data: {
             title: title,
             ownerId: user.id,
-            rating: ratingValue,
         },
     });
 
@@ -53,9 +51,7 @@ platformsRouter.put('/:id', async (req, res) => {
     const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
-    const { title, rating } = req.body;
-
-    const ratingValue = parseInt(rating);
+    const { title } = req.body;
 
     await db.platform
         .updateMany({
@@ -66,7 +62,6 @@ platformsRouter.put('/:id', async (req, res) => {
             data: {
                 title: title,
                 ownerId: user.id,
-                rating: ratingValue,
             },
         })
         .catch((e: any) => {

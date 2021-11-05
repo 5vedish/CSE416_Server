@@ -18,6 +18,19 @@ meRouter.get('/', async (req, res) => {
     });
 });
 
+meRouter.get('/platform', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const platform = await db.platform.findFirst({
+        where: { ownerId: req.session.user.id },
+    });
+    if (!platform) {
+        return res.sendStatus(404);
+    }
+    return res.json({ platformId: platform.id });
+});
+
 meRouter.delete('/sessions', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);

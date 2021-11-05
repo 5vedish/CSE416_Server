@@ -19,6 +19,7 @@ model User {
   passwordResets   PasswordReset[] @relation("PasswordResets")
   sessions         Session[]       @relation("Sessions")
   createdPlatforms Platform[]      @relation("OwnedPlatforms")
+  quizAttempts QuizAttempt[] @relation("QuizAttempts")
   currency         Int
   level            Int
   experience       Int
@@ -37,7 +38,7 @@ model Platform {
   quizzes Quiz[] @relation("Quizzes")
   owner   User   @relation("OwnedPlatforms", fields: [ownerId], references: [id])
   ownerId Int
-  rating  Int
+  rating  Int @default(0)
 }
 
 enum Difficulty {
@@ -48,10 +49,21 @@ enum Difficulty {
 
 model Quiz {
   id         Int        @id @default(autoincrement())
+  title      String
   questions  Question[] @relation("Questions")
   difficulty Difficulty
   platform   Platform   @relation("Quizzes", fields: [platformId], references: [id])
   platformId Int
+}
+
+model QuizAttempt {
+  id  Int @id @default(autoincrement())
+  user User @relation("QuizAttempts", fields: [userId], references: [id])
+  userId Int 
+  startTime DateTime
+  endTime DateTime
+  questionsCompleted Int
+  totalQuestions Int
 }
 
 model Question {

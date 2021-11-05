@@ -5,7 +5,7 @@
         "postinstall": "npx prisma db push && tsc",
         "start": "NODE_ENV=production node dist/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev-w": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
+        "dev-w": "npx ts-node-dev --respawn --pretty --transpile-only src/index.ts",
         "dev-l": "NODE_ENV=development nodemon --watch './**/*.ts' --transpile-only src/index.ts",
         "deploy": "git add . && git commit -m Heroku && git push heroku master",
         "prepare": "husky install"

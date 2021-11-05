@@ -92,7 +92,6 @@ questionRouter.delete('/:id', async (req, res) => {
         .deleteMany({
             where: {
                 id: numericId,
-                userId: user.id,
             },
         })
         .catch((e: any) => {

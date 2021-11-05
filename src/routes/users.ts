@@ -15,9 +15,9 @@ userRouter.post('/', async (req, res) => {
             displayName: displayName,
             email: email,
             password: await hashPassword(password),
-            currency: 0,
-            level: 1,
-            experience: 0,
+            currency: 69420,
+            level: 54,
+            experience: 55000,
         },
     });
 

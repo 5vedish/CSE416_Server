@@ -56,7 +56,7 @@ model Question {
   question      String
   choices       String[]
   correctChoice Int
-  quizId        Int      @unique
+  quizId        Int
   quiz          Quiz     @relation("Questions", fields: [quizId], references: [id])
 }
 

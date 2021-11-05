@@ -61,9 +61,11 @@ model QuizAttempt {
   id  Int @id @default(autoincrement())
   user User @relation("QuizAttempts", fields: [userId], references: [id])
   userId Int 
-  startTime DateTime
-  endTime DateTime
+  startTime DateTime @default(now())
+  endTime DateTime @default(now())
   questionsCompleted Int @default(0)
+  questionsCorrect Int @default(0)
+  difficulty Difficulty
   totalQuestions Int
 }
 

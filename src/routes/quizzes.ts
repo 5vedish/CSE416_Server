@@ -4,7 +4,7 @@ import { quizAttemptsRouter } from './quizAttempts';
 
 const quizzesRouter = express.Router();
 
-quizzesRouter.use('/:id/attempts', quizAttemptsRouter);
+quizzesRouter.use('/:quizId/attempts', quizAttemptsRouter);
 
 quizzesRouter.post('/', async (req, res) => {
     if (!req.session) {
@@ -19,6 +19,13 @@ quizzesRouter.post('/', async (req, res) => {
             platformId: platformId,
             title: 'New Quiz',
             maxTime: 60,
+            questions: {
+                create: {
+                    question: 'What is the meaning of life?',
+                    choices: ['41', '42', '43', '44'],
+                    correctChoice: 1,
+                },
+            },
         },
     });
 
@@ -36,6 +43,9 @@ quizzesRouter.get('/:id', async (req, res) => {
         where: {
             id: quizId,
         },
+        include: {
+            questions: true,
+        },
     });
 
     if (!quiz) {
@@ -45,12 +55,14 @@ quizzesRouter.get('/:id', async (req, res) => {
     res.json(quiz);
 });
 
-quizzesRouter.put('/', async (req, res) => {
+quizzesRouter.put('/:id', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
 
-    const { quizId, newTitle, newDifficulty } = req.body;
+    const quizId = parseInt(req.params.id);
+
+    const { newTitle, newDifficulty } = req.body;
 
     const updated = await db.quiz
         .updateMany({

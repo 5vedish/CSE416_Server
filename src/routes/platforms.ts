@@ -46,6 +46,7 @@ platformsRouter.get('/:id', async (req, res) => {
                     difficulty: true,
                     maxTime: true,
                     title: true,
+                    questions: true,
                 },
             },
         },

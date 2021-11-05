@@ -50,16 +50,18 @@ quizzesRouter.put('/', async (req, res) => {
         return res.sendStatus(401);
     }
 
-    const { quizId, newTitle, newDifficulty } = req.body;
+    const { quizId, title, difficulty } = req.body;
+
+    console.log(quizId, title);
 
     const updated = await db.quiz
         .updateMany({
             where: {
-                id: quizId,
+                id: parseInt(quizId),
             },
             data: {
-                title: newTitle,
-                difficulty: newDifficulty,
+                title: title,
+                difficulty: difficulty,
             },
         })
         .catch((e: any) => {

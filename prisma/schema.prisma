@@ -54,6 +54,7 @@ model Quiz {
   difficulty Difficulty
   platform   Platform   @relation("Quizzes", fields: [platformId], references: [id])
   platformId Int
+  maxTime Int
 }
 
 model QuizAttempt {

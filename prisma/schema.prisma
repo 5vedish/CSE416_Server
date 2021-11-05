@@ -33,7 +33,7 @@ model Platform {
   title   String
   quizzes Quiz[] @relation("Quizzes")
   owner   User   @relation("OwnedPlatforms", fields: [ownerId], references: [id])
-  ownerId Int    @unique
+  ownerId Int
   rating  Int
 }
 

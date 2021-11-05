@@ -49,7 +49,7 @@ enum Difficulty {
 
 model Quiz {
   id         Int        @id @default(autoincrement())
-  title String 
+  title      String
   questions  Question[] @relation("Questions")
   difficulty Difficulty
   platform   Platform   @relation("Quizzes", fields: [platformId], references: [id])

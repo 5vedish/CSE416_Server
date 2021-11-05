@@ -1,7 +1,10 @@
 import express from 'express';
 import { db } from '../db';
+import { quizAttemptsRouter } from './quizAttempts';
 
 const quizzesRouter = express.Router();
+
+quizzesRouter.use('/:id/attempts', quizAttemptsRouter);
 
 quizzesRouter.post('/', async (req, res) => {
     if (!req.session) {
@@ -12,9 +15,10 @@ quizzesRouter.post('/', async (req, res) => {
 
     const result = await db.quiz.create({
         data: {
-            difficulty: 'EASY',
+            difficulty: 'Easy',
             platformId: platformId,
-            title: '',
+            title: 'New Quiz',
+            maxTime: 60,
         },
     });
 

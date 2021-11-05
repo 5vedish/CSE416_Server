@@ -42,9 +42,9 @@ model Platform {
 }
 
 enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
+  Easy
+  Medium
+  Hard
 }
 
 model Quiz {
@@ -63,7 +63,7 @@ model QuizAttempt {
   userId Int 
   startTime DateTime
   endTime DateTime
-  questionsCompleted Int
+  questionsCompleted Int @default(0)
   totalQuestions Int
 }
 

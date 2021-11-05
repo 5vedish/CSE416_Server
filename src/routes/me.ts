@@ -12,7 +12,9 @@ meRouter.get('/', async (req, res) => {
 
     return res.status(200).json({
         displayName: req.session.user.displayName,
-        email: req.session.user.email,
+        currency: req.session.user.currency,
+        experience: req.session.user.experience,
+        level: req.session.user.level,
     });
 });
 

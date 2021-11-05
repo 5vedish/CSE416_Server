@@ -21,4 +21,14 @@ userRouter.post('/', async (req, res) => {
     res.sendStatus(200);
 });
 
+userRouter.get('/', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    return res.status(200).json({
+        displayName: req.session.user.displayName,
+    });
+});
+
 export { userRouter };

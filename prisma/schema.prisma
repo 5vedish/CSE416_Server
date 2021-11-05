@@ -11,14 +11,18 @@ generator client {
 }
 
 model User {
-  id             Int             @id @default(autoincrement())
-  displayName    String
-  email          String          @unique
-  password       String
-  createdAt      DateTime        @default(now())
-  passwordResets PasswordReset[] @relation("PasswordResets")
-  sessions       Session[]       @relation("Sessions")
-  question       Question?       @relation("Question") // TEMPORARY - REMOVE AFTER WE INTRODUCE QUIZZES/PLATFORMS
+  id               Int             @id @default(autoincrement())
+  displayName      String
+  email            String          @unique
+  password         String
+  createdAt        DateTime        @default(now())
+  passwordResets   PasswordReset[] @relation("PasswordResets")
+  sessions         Session[]       @relation("Sessions")
+  createdPlatforms Platform[]      @relation("OwnedPlatforms")
+  quizAttempts QuizAttempt[] @relation("QuizAttempts")
+  currency         Int
+  level            Int
+  experience       Int
 }
 
 model Session {
@@ -28,13 +32,50 @@ model Session {
   createdAt DateTime @default(now())
 }
 
+model Platform {
+  id      Int    @id @default(autoincrement())
+  title   String
+  quizzes Quiz[] @relation("Quizzes")
+  owner   User   @relation("OwnedPlatforms", fields: [ownerId], references: [id])
+  ownerId Int
+  rating  Int @default(0)
+}
+
+enum Difficulty {
+  Easy
+  Medium
+  Hard
+}
+
+model Quiz {
+  id         Int        @id @default(autoincrement())
+  title      String
+  questions  Question[] @relation("Questions")
+  difficulty Difficulty
+  platform   Platform   @relation("Quizzes", fields: [platformId], references: [id])
+  platformId Int
+  maxTime Int
+}
+
+model QuizAttempt {
+  id  Int @id @default(autoincrement())
+  user User @relation("QuizAttempts", fields: [userId], references: [id])
+  userId Int 
+  startTime DateTime @default(now())
+  endTime DateTime @default(now())
+  questionsCompleted Int @default(0)
+  questionsCorrect Int @default(0)
+  difficulty Difficulty
+  totalQuestions Int
+}
+
 model Question {
   id            Int      @id @default(autoincrement())
   question      String
   choices       String[]
   correctChoice Int
-  userId        Int      @unique
-  user          User     @relation("Question", fields: [userId], references: [id])
+  quizId        Int
+  quiz          Quiz     @relation("Questions", fields: [quizId], references: [id])
 }
 
 model PasswordReset {

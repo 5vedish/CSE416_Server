@@ -1,32 +1,27 @@
 import express from 'express';
 import { db } from '../db';
 
-const questionRouter = express.Router();
+const platformsRouter = express.Router();
 
-questionRouter.post('/:id', async (req, res) => {
+platformsRouter.post('/', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
 
     const { user } = req.session;
-    const { question, choices, correctChoice } = req.body;
-    const quizId = parseInt(req.params.id);
+    const { title } = req.body;
 
-    const correctChoiceIndex = parseInt(correctChoice);
-
-    const result = await db.question.create({
+    const result = await db.platform.create({
         data: {
-            question,
-            choices,
-            correctChoice: correctChoiceIndex,
-            quizId: quizId,
+            title: title,
+            ownerId: user.id,
         },
     });
 
     res.json({ id: result.id });
 });
 
-questionRouter.get('/:id', async (req, res) => {
+platformsRouter.get('/:id', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
@@ -34,20 +29,42 @@ questionRouter.get('/:id', async (req, res) => {
     const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
-    const questionToCheck = await db.question.findFirst({
+    const platform = await db.platform.findFirst({
         where: {
             id: numericId,
+            ownerId: user.id,
+        },
+        include: {
+            owner: {
+                select: {
+                    displayName: true,
+                },
+            },
+            quizzes: {
+                select: {
+                    id: true,
+                    difficulty: true,
+                    maxTime: true,
+                    title: true,
+                    questions: true,
+                },
+            },
         },
     });
+    console.log(platform);
 
-    if (!questionToCheck) {
+    if (!platform) {
         return res.sendStatus(404);
     }
 
-    res.json(questionToCheck);
+    res.json({
+        title: platform.title,
+        owner: platform.owner.displayName,
+        quizzes: platform.quizzes,
+    });
 });
 
-questionRouter.put('/:id', async (req, res) => {
+platformsRouter.put('/:id', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
@@ -55,19 +72,17 @@ questionRouter.put('/:id', async (req, res) => {
     const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
-    const { question, choices, correctChoice } = req.body;
+    const { title } = req.body;
 
-    const correctChoiceIndex = parseInt(correctChoice);
-
-    await db.question
+    await db.platform
         .updateMany({
             where: {
                 id: numericId,
+                ownerId: user.id,
             },
             data: {
-                question,
-                choices,
-                correctChoice: correctChoiceIndex,
+                title: title,
+                ownerId: user.id,
             },
         })
         .catch((e: any) => {
@@ -79,7 +94,7 @@ questionRouter.put('/:id', async (req, res) => {
     res.sendStatus(200);
 });
 
-questionRouter.delete('/:id', async (req, res) => {
+platformsRouter.delete('/:id', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
@@ -88,11 +103,11 @@ questionRouter.delete('/:id', async (req, res) => {
     console.log(req.params, req.session);
     const numericId = parseInt(req.params.id);
 
-    await db.question
+    await db.platform
         .deleteMany({
             where: {
                 id: numericId,
-                userId: user.id,
+                ownerId: user.id,
             },
         })
         .catch((e: any) => {
@@ -104,4 +119,4 @@ questionRouter.delete('/:id', async (req, res) => {
     res.sendStatus(200);
 });
 
-export { questionRouter };
+export { platformsRouter };

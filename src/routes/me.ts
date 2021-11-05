@@ -12,8 +12,24 @@ meRouter.get('/', async (req, res) => {
 
     return res.status(200).json({
         displayName: req.session.user.displayName,
-        email: req.session.user.email,
+        currency: req.session.user.currency,
+        experience: req.session.user.experience,
+        level: req.session.user.level,
     });
+});
+
+meRouter.get('/platform', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const platform = await db.platform.findFirst({
+        where: { ownerId: req.session.user.id },
+    });
+    console.log(platform);
+    if (!platform) {
+        return res.sendStatus(404);
+    }
+    return res.json({ platformId: platform.id });
 });
 
 meRouter.delete('/sessions', async (req, res) => {

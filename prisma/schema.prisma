@@ -20,6 +20,9 @@ model User {
   sessions         Session[]       @relation("Sessions")
   createdPlatforms Platform[]      @relation("OwnedPlatforms")
   quizAttempts QuizAttempt[] @relation("QuizAttempts")
+  currency         Int
+  level            Int
+  experience       Int
 }
 
 model Session {
@@ -67,7 +70,7 @@ model Question {
   question      String
   choices       String[]
   correctChoice Int
-  quizId        Int      @unique
+  quizId        Int
   quiz          Quiz     @relation("Questions", fields: [quizId], references: [id])
 }
 

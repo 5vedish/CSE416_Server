@@ -3,13 +3,14 @@ import { db } from '../db';
 
 const questionRouter = express.Router();
 
-questionRouter.post('/', async (req, res) => {
+questionRouter.post('/:id', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
 
     const { user } = req.session;
     const { question, choices, correctChoice } = req.body;
+    const quizId = parseInt(req.params.id);
 
     const correctChoiceIndex = parseInt(correctChoice);
 
@@ -18,7 +19,7 @@ questionRouter.post('/', async (req, res) => {
             question,
             choices,
             correctChoice: correctChoiceIndex,
-            userId: user.id,
+            quizId: quizId,
         },
     });
 
@@ -36,7 +37,6 @@ questionRouter.get('/:id', async (req, res) => {
     const questionToCheck = await db.question.findFirst({
         where: {
             id: numericId,
-            userId: user.id,
         },
     });
 
@@ -63,7 +63,6 @@ questionRouter.put('/:id', async (req, res) => {
         .updateMany({
             where: {
                 id: numericId,
-                userId: user.id,
             },
             data: {
                 question,
@@ -93,7 +92,6 @@ questionRouter.delete('/:id', async (req, res) => {
         .deleteMany({
             where: {
                 id: numericId,
-                userId: user.id,
             },
         })
         .catch((e: any) => {

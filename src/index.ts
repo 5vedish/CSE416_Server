@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-import { passwordResetRouter } from './routes/passwordReset';
+import { passwordResetRouter } from './routes/passwordResets';
 import { questionRouter } from './routes/questions';
 import { sessionRouter } from './routes/sessions';
 import { meRouter } from './routes/me';

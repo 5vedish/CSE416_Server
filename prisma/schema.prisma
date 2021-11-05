@@ -19,6 +19,9 @@ model User {
   passwordResets   PasswordReset[] @relation("PasswordResets")
   sessions         Session[]       @relation("Sessions")
   createdPlatforms Platform[]      @relation("OwnedPlatforms")
+  currency         Int
+  level            Int
+  experience       Int
 }
 
 model Session {

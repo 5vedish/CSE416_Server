@@ -15,6 +15,9 @@ userRouter.post('/', async (req, res) => {
             displayName: displayName,
             email: email,
             password: await hashPassword(password),
+            currency: 0,
+            level: 1,
+            experience: 0,
         },
     });
 
@@ -28,6 +31,9 @@ userRouter.get('/', async (req, res) => {
 
     return res.status(200).json({
         displayName: req.session.user.displayName,
+        currency: req.session.user.currency,
+        experience: req.session.user.experience,
+        level: req.session.user.level,
     });
 });
 

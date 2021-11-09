@@ -15,7 +15,7 @@ quizzesRouter.post('/', async (req, res) => {
 
     const result = await db.quiz.create({
         data: {
-            difficulty: 'Easy',
+            difficulty: 'EASY',
             platformId: platformId,
             title: 'New Quiz',
             maxTime: 60,

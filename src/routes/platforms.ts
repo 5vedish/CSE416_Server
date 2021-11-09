@@ -64,6 +64,31 @@ platformsRouter.get('/:id', async (req, res) => {
     });
 });
 
+platformsRouter.get('/:id/ratings', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
+    const numericId = parseInt(req.params.id);
+
+    const platform = await db.platform.findFirst({
+        where: {
+            id: numericId,
+            ownerId: user.id,
+        },
+    });
+    console.log(platform);
+
+    if (!platform) {
+        return res.sendStatus(404);
+    }
+
+    res.json({
+        rating: platform.rating,
+    });
+});
+
 platformsRouter.put('/:id', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
@@ -83,6 +108,34 @@ platformsRouter.put('/:id', async (req, res) => {
             data: {
                 title: title,
                 ownerId: user.id,
+            },
+        })
+        .catch((e: any) => {
+            console.log(e);
+            res.sendStatus(404);
+            return;
+        });
+
+    res.sendStatus(200);
+});
+
+platformsRouter.put('/:id/ratings/:rating', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const { user } = req.session;
+    const numericId = parseInt(req.params.id);
+    const rating = parseInt(req.params.rating);
+
+    await db.platform
+        .updateMany({
+            where: {
+                id: numericId,
+                ownerId: user.id,
+            },
+            data: {
+                rating: rating,
             },
         })
         .catch((e: any) => {

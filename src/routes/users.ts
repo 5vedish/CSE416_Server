@@ -3,6 +3,27 @@ import { db } from '../db';
 
 import { hashPassword } from '../utils/auth';
 
+const getUserById = async (id: number) => {
+    return await db.user.findFirst({
+        where: {
+            id: id,
+        },
+        select: {
+            displayName: true,
+            currency: true,
+            experience: true,
+            level: true,
+            createdPlatforms: {
+                select: {
+                    id: true,
+                    title: true,
+                    rating: true,
+                },
+            },
+        },
+    });
+};
+
 const userRouter = express.Router();
 
 const userSortCriteria = [
@@ -91,26 +112,9 @@ userRouter.get('/:id', async (req, res) => {
 
     const userId = parseInt(req.params.id);
 
-    const user = await db.user.findFirst({
-        where: {
-            id: userId,
-        },
-        select: {
-            displayName: true,
-            currency: true,
-            experience: true,
-            level: true,
-            createdPlatforms: {
-                select: {
-                    id: true,
-                    title: true,
-                    rating: true,
-                },
-            },
-        },
-    });
+    const user = await getUserById(userId);
 
     return res.json(user);
 });
 
-export { userRouter };
+export { userRouter, getUserById };

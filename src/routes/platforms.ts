@@ -1,7 +1,66 @@
-import express from 'express';
+import express, { query } from 'express';
 import { db } from '../db';
 
 const platformsRouter = express.Router();
+
+const platformSortCriteria = ['title', 'rating'] as const;
+
+type PlatformSortBy = typeof platformSortCriteria[number];
+
+platformsRouter.get('/', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const queryTitle = req.query.title ? (req.query.title as string) : '';
+
+    const take = req.query.per_page
+        ? parseInt(req.query.per_page as string)
+        : 5;
+
+    const skip = req.query.page
+        ? (parseInt(req.query.page as string) - 1) * take
+        : 0;
+
+    if (
+        req.query.sort_by &&
+        !platformSortCriteria.find((e) => e === req.query.sort_by)
+    ) {
+        return res.sendStatus(400);
+    }
+
+    const sortCriteria: PlatformSortBy = req.query.sort_by
+        ? (req.query.sort_by as PlatformSortBy)
+        : 'title';
+
+    const descending = Boolean(req.query.desc);
+
+    const foundPlatforms = await db.platform.findMany({
+        where: {
+            title: {
+                contains: queryTitle,
+                mode: 'insensitive',
+            },
+        },
+        select: {
+            id: true,
+            rating: true,
+            title: true,
+            owner: {
+                select: {
+                    displayName: true,
+                },
+            },
+        },
+        orderBy: {
+            [sortCriteria]: descending ? 'desc' : 'asc',
+        },
+        skip,
+        take,
+    });
+
+    return res.json({ platforms: foundPlatforms });
+});
 
 platformsRouter.post('/', async (req, res) => {
     if (!req.session) {

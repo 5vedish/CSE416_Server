@@ -89,12 +89,28 @@ userRouter.get('/:id', async (req, res) => {
         return res.sendStatus(401);
     }
 
-    return res.status(200).json({
-        displayName: req.session.user.displayName,
-        currency: req.session.user.currency,
-        experience: req.session.user.experience,
-        level: req.session.user.level,
+    const userId = parseInt(req.params.id);
+
+    const user = await db.user.findFirst({
+        where: {
+            id: userId,
+        },
+        select: {
+            displayName: true,
+            currency: true,
+            experience: true,
+            level: true,
+            createdPlatforms: {
+                select: {
+                    id: true,
+                    title: true,
+                    rating: true,
+                },
+            },
+        },
     });
+
+    return res.json(user);
 });
 
 export { userRouter };

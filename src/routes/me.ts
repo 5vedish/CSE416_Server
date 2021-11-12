@@ -2,6 +2,7 @@ import express from 'express';
 import { db } from '../db';
 
 import { hashPassword } from '../utils/auth';
+import { getUserById } from './users';
 
 const meRouter = express.Router();
 
@@ -10,12 +11,7 @@ meRouter.get('/', async (req, res) => {
         return res.sendStatus(401);
     }
 
-    return res.status(200).json({
-        displayName: req.session.user.displayName,
-        currency: req.session.user.currency,
-        experience: req.session.user.experience,
-        level: req.session.user.level,
-    });
+    return res.json(await getUserById(req.session.user.id));
 });
 
 meRouter.get('/platform', async (req, res) => {

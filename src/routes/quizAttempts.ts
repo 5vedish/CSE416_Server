@@ -127,7 +127,10 @@ quizAttemptsRouter.patch('/:attemptId', async (req, res) => {
         },
     });
     if (!returnAttempt) return res.sendStatus(404);
+    console.log('BACKEND REWARDS USERID');
+    console.log(user.id);
     return res.json({
+        userId: user.id,
         startTime: returnAttempt.startTime,
         endTime: returnAttempt.endTime,
         questionsCompleted: returnAttempt.questionsCompleted,

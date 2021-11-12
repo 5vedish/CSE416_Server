@@ -117,4 +117,33 @@ userRouter.get('/:id', async (req, res) => {
     return res.json(user);
 });
 
+userRouter.put('/rewards/:id', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    const userId = parseInt(req.params.id);
+
+    const user = await getUserById(userId);
+
+    const { currency, experience } = req.body;
+
+    if (user) {
+        const numCurrency = parseInt(currency) + user.currency;
+        const numExp = parseInt(experience) + user.experience;
+
+        await db.user.updateMany({
+            where: {
+                id: userId,
+            },
+            data: {
+                currency: numCurrency,
+                experience: numExp,
+            },
+        });
+    }
+
+    return res.json(user);
+});
+
 export { userRouter, getUserById };

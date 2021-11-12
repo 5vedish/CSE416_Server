@@ -52,7 +52,7 @@ model Quiz {
   title      String
   questions  Question[] @relation("Questions")
   difficulty Difficulty
-  platform   Platform   @relation("Quizzes", fields: [platformId], references: [id])
+  platform   Platform   @relation("Quizzes", fields: [platformId], references: [id], onDelete: Cascade)
   platformId Int
   maxTime    Int
 }
@@ -75,7 +75,7 @@ model Question {
   choices       String[]
   correctChoice Int
   quizId        Int
-  quiz          Quiz     @relation("Questions", fields: [quizId], references: [id])
+  quiz          Quiz     @relation("Questions", fields: [quizId], references: [id], onDelete: Cascade)
 }
 
 model PasswordReset {

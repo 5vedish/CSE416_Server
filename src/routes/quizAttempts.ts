@@ -47,7 +47,7 @@ quizAttemptsRouter.post('/', async (req, res) => {
             questions: true,
         },
     });
-    if (!quiz || quiz.platform.ownerId !== user.id) {
+    if (!quiz) {
         return res.sendStatus(404);
     }
     const quizAttempt = await db.quizAttempt.create({

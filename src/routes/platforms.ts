@@ -61,6 +61,7 @@ platformsRouter.get('/:id', async (req, res) => {
         title: platform.title,
         owner: platform.owner.displayName,
         quizzes: platform.quizzes,
+        rating: platform.rating,
     });
 });
 

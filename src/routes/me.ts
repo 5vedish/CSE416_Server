@@ -11,7 +11,7 @@ meRouter.get('/', async (req, res) => {
         return res.sendStatus(401);
     }
 
-    return await getUserById(req.session.user.id);
+    return res.json(await getUserById(req.session.user.id));
 });
 
 meRouter.get('/platform', async (req, res) => {

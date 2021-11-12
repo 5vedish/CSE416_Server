@@ -26,12 +26,7 @@ const getUserById = async (id: number) => {
 
 const userRouter = express.Router();
 
-const userSortCriteria = [
-    'displayName',
-    'currency',
-    'level',
-    'experience',
-] as const;
+const userSortCriteria = ['displayName', 'currency', 'level'] as const;
 
 type UserSortBy = typeof userSortCriteria[number];
 
@@ -61,7 +56,10 @@ userRouter.get('/', async (req, res) => {
         ? (req.query.sort_by as UserSortBy)
         : 'displayName';
 
-    const descending = Boolean(req.query.desc);
+    const descending =
+        req.query.desc != undefined
+            ? JSON.parse(req.query.desc as string)
+            : false;
 
     const foundUsers = await db.user.findMany({
         where: {
@@ -71,6 +69,7 @@ userRouter.get('/', async (req, res) => {
             },
         },
         select: {
+            id: true,
             displayName: true,
             currency: true,
             experience: true,

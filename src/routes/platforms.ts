@@ -88,13 +88,11 @@ platformsRouter.get('/:id', async (req, res) => {
         return res.sendStatus(401);
     }
 
-    const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
     const platform = await db.platform.findFirst({
         where: {
             id: numericId,
-            ownerId: user.id,
         },
         include: {
             owner: {
@@ -113,7 +111,6 @@ platformsRouter.get('/:id', async (req, res) => {
             },
         },
     });
-    console.log(platform);
 
     if (!platform) {
         return res.sendStatus(404);

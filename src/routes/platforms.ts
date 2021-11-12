@@ -1,4 +1,5 @@
 import express from 'express';
+import { parse } from 'path/posix';
 import { db } from '../db';
 
 const platformsRouter = express.Router();
@@ -88,13 +89,11 @@ platformsRouter.get('/:id', async (req, res) => {
         return res.sendStatus(401);
     }
 
-    const { user } = req.session;
     const numericId = parseInt(req.params.id);
 
     const platform = await db.platform.findFirst({
         where: {
             id: numericId,
-            ownerId: user.id,
         },
         include: {
             owner: {
@@ -113,13 +112,13 @@ platformsRouter.get('/:id', async (req, res) => {
             },
         },
     });
-    console.log(platform);
 
     if (!platform) {
         return res.sendStatus(404);
     }
 
     res.json({
+        id: platform.id,
         title: platform.title,
         owner: platform.owner.displayName,
         quizzes: platform.quizzes,
@@ -182,23 +181,23 @@ platformsRouter.put('/:id', async (req, res) => {
     res.sendStatus(200);
 });
 
-platformsRouter.put('/:id/ratings/:rating', async (req, res) => {
+platformsRouter.put('/:id/ratings', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
 
     const { user } = req.session;
     const numericId = parseInt(req.params.id);
-    const rating = parseInt(req.params.rating);
-
+    const { rating } = req.body;
+    const ratingValue = parseInt(rating);
+    console.log(ratingValue);
     await db.platform
         .updateMany({
             where: {
                 id: numericId,
-                ownerId: user.id,
             },
             data: {
-                rating: rating,
+                rating: ratingValue,
             },
         })
         .catch((e: any) => {

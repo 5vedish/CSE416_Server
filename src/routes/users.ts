@@ -26,12 +26,7 @@ const getUserById = async (id: number) => {
 
 const userRouter = express.Router();
 
-const userSortCriteria = [
-    'displayName',
-    'currency',
-    'level',
-    'experience',
-] as const;
+const userSortCriteria = ['displayName', 'currency', 'level'] as const;
 
 type UserSortBy = typeof userSortCriteria[number];
 

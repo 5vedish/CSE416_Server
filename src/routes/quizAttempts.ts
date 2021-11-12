@@ -18,6 +18,7 @@ quizAttemptsRouter.get('/', async (req, res) => {
         return res.sendStatus(404);
     }
     return res.json({
+        userId: user.id,
         startTime: returnAttempt.startTime,
         endTime: returnAttempt.endTime,
         questionsCompleted: returnAttempt.questionsCompleted,

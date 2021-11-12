@@ -125,11 +125,18 @@ userRouter.put('/rewards/:id', async (req, res) => {
 
     const user = await getUserById(userId);
 
+    console.log(user);
+
     const { currency, experience } = req.body;
+    console.log(req.body);
 
     if (user) {
+        console.log('hit');
+        console.log(currency, ',', experience);
         const numCurrency = parseInt(currency) + user.currency;
         const numExp = parseInt(experience) + user.experience;
+
+        console.log(numCurrency, ',', numExp);
 
         await db.user.updateMany({
             where: {

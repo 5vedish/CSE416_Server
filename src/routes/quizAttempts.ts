@@ -89,7 +89,7 @@ quizAttemptsRouter.patch('/:attemptId', async (req, res) => {
             },
         },
     });
-    if (!quiz || quiz.platform.ownerId !== user.id) {
+    if (!quiz) {
         return res.sendStatus(404);
     }
     console.log(req.body);

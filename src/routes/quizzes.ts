@@ -13,17 +13,19 @@ quizzesRouter.post('/', async (req, res) => {
 
     const { platformId } = req.body;
 
+    console.log('CREATE QUIZ FROM BACKEND');
+
     const result = await db.quiz.create({
         data: {
-            difficulty: 'Easy',
+            difficulty: 'EASY',
             platformId: platformId,
             title: 'New Quiz',
             maxTime: 60,
             questions: {
                 create: {
-                    question: 'What is the meaning of life?',
-                    choices: ['41', '42', '43', '44'],
-                    correctChoice: 1,
+                    question: 'What is the question you want to ask?',
+                    choices: ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'],
+                    correctChoice: 0,
                 },
             },
         },
@@ -74,7 +76,7 @@ quizzesRouter.put('/:id', async (req, res) => {
             data: {
                 title: title,
                 difficulty: difficulty,
-                maxTime: totalTime,
+                maxTime: parseInt(totalTime),
             },
         })
         .catch((e: any) => {
@@ -92,6 +94,8 @@ quizzesRouter.delete('/:id', async (req, res) => {
     }
 
     const quizId = parseInt(req.params.id);
+
+    console.log(quizId);
 
     const deleted = await db.quiz
         .deleteMany({ where: { id: quizId } })

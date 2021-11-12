@@ -19,7 +19,7 @@ model User {
   passwordResets   PasswordReset[] @relation("PasswordResets")
   sessions         Session[]       @relation("Sessions")
   createdPlatforms Platform[]      @relation("OwnedPlatforms")
-  quizAttempts QuizAttempt[] @relation("QuizAttempts")
+  quizAttempts     QuizAttempt[]   @relation("QuizAttempts")
   currency         Int
   level            Int
   experience       Int
@@ -38,13 +38,13 @@ model Platform {
   quizzes Quiz[] @relation("Quizzes")
   owner   User   @relation("OwnedPlatforms", fields: [ownerId], references: [id])
   ownerId Int
-  rating  Int @default(0)
+  rating  Int    @default(0)
 }
 
 enum Difficulty {
-  Easy
-  Medium
-  Hard
+  EASY
+  MEDIUM
+  HARD
 }
 
 model Quiz {
@@ -52,21 +52,21 @@ model Quiz {
   title      String
   questions  Question[] @relation("Questions")
   difficulty Difficulty
-  platform   Platform   @relation("Quizzes", fields: [platformId], references: [id])
+  platform   Platform   @relation("Quizzes", fields: [platformId], references: [id], onDelete: Cascade)
   platformId Int
-  maxTime Int
+  maxTime    Int
 }
 
 model QuizAttempt {
-  id  Int @id @default(autoincrement())
-  user User @relation("QuizAttempts", fields: [userId], references: [id])
-  userId Int 
-  startTime DateTime @default(now())
-  endTime DateTime @default(now())
-  questionsCompleted Int @default(0)
-  questionsCorrect Int @default(0)
-  difficulty Difficulty
-  totalQuestions Int
+  id                 Int        @id @default(autoincrement())
+  user               User       @relation("QuizAttempts", fields: [userId], references: [id])
+  userId             Int
+  startTime          DateTime   @default(now())
+  endTime            DateTime   @default(now())
+  questionsCompleted Int        @default(0)
+  questionsCorrect   Int        @default(0)
+  difficulty         Difficulty
+  totalQuestions     Int
 }
 
 model Question {
@@ -75,7 +75,7 @@ model Question {
   choices       String[]
   correctChoice Int
   quizId        Int
-  quiz          Quiz     @relation("Questions", fields: [quizId], references: [id])
+  quiz          Quiz     @relation("Questions", fields: [quizId], references: [id], onDelete: Cascade)
 }
 
 model PasswordReset {

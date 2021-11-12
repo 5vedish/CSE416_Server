@@ -13,6 +13,7 @@ import { errHandler } from './middleware/err';
 import { authHandler } from './middleware/auth';
 import { platformsRouter } from './routes/platforms';
 import { quizzesRouter } from './routes/quizzes';
+import { quizAttemptsRouter } from './routes/quizAttempts';
 
 const app = express();
 let port = process.env.PORT || 8080; // default port to listen
@@ -38,6 +39,7 @@ app.use('/sessions', sessionRouter);
 app.use('/me', meRouter);
 app.use('/password_resets', passwordResetRouter);
 app.use('/quizzes', quizzesRouter);
+app.use('/attempts', quizAttemptsRouter);
 
 app.use(errHandler);
 

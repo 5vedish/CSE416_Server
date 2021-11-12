@@ -1,4 +1,4 @@
-import express, { query } from 'express';
+import express from 'express';
 import { db } from '../db';
 
 const platformsRouter = express.Router();
@@ -33,7 +33,10 @@ platformsRouter.get('/', async (req, res) => {
         ? (req.query.sort_by as PlatformSortBy)
         : 'title';
 
-    const descending = Boolean(req.query.desc);
+    const descending =
+        req.query.desc != undefined
+            ? JSON.parse(req.query.desc as string)
+            : false;
 
     const foundPlatforms = await db.platform.findMany({
         where: {

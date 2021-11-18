@@ -23,7 +23,7 @@ model User {
   currency         Int
   level            Int
   experience       Int
-  badges           Badge[]         @relation("OwnedBadges")
+  badges           Badge[]         @relation("AvailableBadges")
 }
 
 model Session {
@@ -92,5 +92,5 @@ model Badge {
   badgeId  Int
   tier     Int    @default(0)
   imageUrl String
-  owners   User[] @relation("OwnedBadges")
+  owners   User[] @relation("AvailableBadges")
 }

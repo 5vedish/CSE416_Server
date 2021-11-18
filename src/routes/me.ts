@@ -94,7 +94,9 @@ meRouter.put('/rewards', async (req, res) => {
             where: {
                 id: user.id,
             },
-            data: {},
+            data: {
+                badges: badges,
+            },
         })
         .catch((e: any) => {
             console.log(e);

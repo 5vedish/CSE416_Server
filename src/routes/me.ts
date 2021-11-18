@@ -65,4 +65,46 @@ meRouter.patch('/', async (req, res) => {
     return res.sendStatus(200);
 });
 
+meRouter.get('/rewards', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    return res.json(
+        await db.user.findFirst({
+            where: {
+                id: req.session?.user.id,
+            },
+            select: {
+                badges: true,
+            },
+        }),
+    );
+});
+
+meRouter.put('/rewards', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const { user } = req.session;
+    const { badges } = req.body;
+
+    await db.user
+        .updateMany({
+            where: {
+                id: user.id,
+            },
+            data: {
+                badges: badges,
+            },
+        })
+        .catch((e: any) => {
+            console.log(e);
+            res.sendStatus(404);
+            return;
+        });
+
+    res.sendStatus(200);
+});
+
 export { meRouter };

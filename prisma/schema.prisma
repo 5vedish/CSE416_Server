@@ -23,6 +23,7 @@ model User {
   currency         Int
   level            Int
   experience       Int
+  badges           Badge[]         @relation("OwnedBadges")
 }
 
 model Session {
@@ -84,4 +85,12 @@ model PasswordReset {
   createdAt DateTime @default(now())
   userId    Int
   user      User     @relation("PasswordResets", fields: [userId], references: [id])
+}
+
+model Badge {
+  id       Int    @id @default(autoincrement())
+  badgeId  Int
+  tier     Int    @default(0)
+  imageUrl String
+  owners   User[] @relation("OwnedBadges")
 }

@@ -14,18 +14,53 @@ meRouter.get('/', async (req, res) => {
     return res.json(await getUserById(req.session.user.id));
 });
 
-meRouter.get('/platform', async (req, res) => {
+// meRouter.get('/platform', async (req, res) => {
+//     if (!req.session) {
+//         return res.sendStatus(401);
+//     }
+//     const platform = await db.platform.findFirst({
+//         where: { ownerId: req.session.user.id },
+//     });
+//     console.log(platform);
+//     if (!platform) {
+//         return res.sendStatus(404);
+//     }
+//     return res.json({ platformId: platform.id });
+// });
+
+meRouter.get('/rewards', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
-    const platform = await db.platform.findFirst({
-        where: { ownerId: req.session.user.id },
+    const { user } = req.session;
+
+    const foundUser = await db.user.findFirst({
+        where: {
+            id: user.id,
+        },
+        select: {
+            badges: true,
+        },
     });
-    console.log(platform);
-    if (!platform) {
-        return res.sendStatus(404);
+    if (!foundUser) {
+        return res.sendStatus(400);
     }
-    return res.json({ platformId: platform.id });
+
+    const badgeMap = foundUser.badges
+        .map((badge) => badge.id)
+        .reduce(
+            (acc: { [key: number]: number }, curr) => ((acc[curr] = 1), acc),
+            {},
+        );
+
+    const badges = await db.badge.findMany();
+
+    return res.json({
+        badges: badges.map((badge) => ({
+            badge,
+            owned: badge.id in badgeMap,
+        })),
+    });
 });
 
 meRouter.delete('/sessions', async (req, res) => {

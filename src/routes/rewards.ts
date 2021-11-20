@@ -3,22 +3,25 @@ import { db } from '../db';
 
 const rewardsRouter = express.Router({ mergeParams: true });
 
-rewardsRouter.get('/', async (req, res) => {
+rewardsRouter.get('/:userId', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
     }
-    const { user } = req.session;
+    const { userId } = req.params;
+
+    const numericUserId = parseInt(userId);
 
     const foundUser = await db.user.findFirst({
         where: {
-            id: user.id,
+            id: numericUserId,
         },
         select: {
+            displayName: true,
             badges: true,
         },
     });
     if (!foundUser) {
-        return res.sendStatus(500);
+        return res.sendStatus(400);
     }
 
     const badgeMap = foundUser.badges
@@ -31,6 +34,7 @@ rewardsRouter.get('/', async (req, res) => {
     const badges = await db.badge.findMany();
 
     return res.json({
+        owner: foundUser.displayName,
         badges: badges.map((badge) => ({
             badge,
             owned: badge.id in badgeMap,

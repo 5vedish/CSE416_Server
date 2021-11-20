@@ -76,7 +76,7 @@ meRouter.get('/rewards', async (req, res) => {
                 id: req.session?.user.id,
             },
             select: {
-                badges: true,
+                // badges: true,
             },
         }),
     );
@@ -95,7 +95,7 @@ meRouter.put('/rewards', async (req, res) => {
                 id: user.id,
             },
             data: {
-                badges: badges,
+                // badges: badges,
             },
         })
         .catch((e: any) => {

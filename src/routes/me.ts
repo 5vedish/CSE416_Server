@@ -101,6 +101,7 @@ meRouter.patch('/', async (req, res) => {
 });
 
 meRouter.get('/rewards', async (req, res) => {
+    console.log('GETTING REWARDS');
     if (!req.session) {
         return res.sendStatus(401);
     }

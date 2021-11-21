@@ -6,17 +6,17 @@ const populateBadges = async () => {
             {
                 name: 'Blue Badge',
                 description: 'This badge is blue.',
-                imageUrl: 'badges/blue.png',
+                imageUrl: '/badges/blue.png',
             },
             {
                 name: 'Red Badge',
                 description: 'This badge is red.',
-                imageUrl: 'badges/red.png',
+                imageUrl: '/badges/red.png',
             },
             {
                 name: 'Green Badge',
                 description: 'This badge is green.',
-                imageUrl: 'badges/green.png',
+                imageUrl: '/badges/green.png',
             },
         ],
     });

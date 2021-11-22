@@ -20,6 +20,7 @@ const getUserById = async (id: number) => {
                     rating: true,
                 },
             },
+            badges: true,
         },
     });
 };

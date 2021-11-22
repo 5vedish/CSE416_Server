@@ -28,6 +28,41 @@ meRouter.get('/platform', async (req, res) => {
     return res.json({ platformId: platform.id });
 });
 
+meRouter.get('/rewards', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const { user } = req.session;
+
+    const foundUser = await db.user.findFirst({
+        where: {
+            id: user.id,
+        },
+        select: {
+            badges: true,
+        },
+    });
+    if (!foundUser) {
+        return res.sendStatus(400);
+    }
+
+    const badgeMap = foundUser.badges
+        .map((badge) => badge.id)
+        .reduce(
+            (acc: { [key: number]: number }, curr) => ((acc[curr] = 1), acc),
+            {},
+        );
+
+    const badges = await db.badge.findMany();
+
+    return res.json({
+        badges: badges.map((badge) => ({
+            badge,
+            owned: badge.id in badgeMap,
+        })),
+    });
+});
+
 meRouter.delete('/sessions', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);
@@ -63,6 +98,46 @@ meRouter.patch('/', async (req, res) => {
     }
 
     return res.sendStatus(200);
+});
+
+meRouter.get('/rewards', async (req, res) => {
+    console.log('GETTING REWARDS');
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+
+    return res.json(
+        await db.user.findFirst({
+            where: {
+                id: req.session?.user.id,
+            },
+            select: {
+                // badges: true,
+            },
+        }),
+    );
+});
+
+meRouter.put('/rewards', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const { user } = req.session;
+    const { badgeId } = req.body;
+    let badgeIdValue = parseInt(badgeId);
+    await db.badge.update({
+        where: {
+            id: badgeIdValue,
+        },
+        data: {
+            owners: { connect: [{ id: user.id }] },
+        },
+        include: {
+            owners: true,
+        },
+    });
+
+    res.sendStatus(200);
 });
 
 export { meRouter };

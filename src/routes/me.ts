@@ -127,10 +127,9 @@ meRouter.put('/rewards', async (req, res) => {
     let badgeIdValue = parseInt(badgeId);
     await db.badge.update({
         where: {
-            id: req.session?.user.id,
+            id: badgeIdValue,
         },
         data: {
-            badgeId: badgeIdValue,
             owners: { connect: [{ id: user.id }] },
         },
         include: {

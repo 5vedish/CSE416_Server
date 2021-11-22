@@ -122,22 +122,20 @@ meRouter.put('/rewards', async (req, res) => {
         return res.sendStatus(401);
     }
     const { user } = req.session;
-    const { badges } = req.body;
-
-    await db.user
-        .updateMany({
-            where: {
-                id: user.id,
-            },
-            data: {
-                badges: badges,
-            },
-        })
-        .catch((e: any) => {
-            console.log(e);
-            res.sendStatus(404);
-            return;
-        });
+    const { badgeId } = req.body;
+    let badgeIdValue = parseInt(badgeId);
+    await db.badge.update({
+        where: {
+            id: req.session?.user.id,
+        },
+        data: {
+            badgeId: badgeIdValue,
+            owners: { connect: [{ id: user.id }] },
+        },
+        include: {
+            owners: true,
+        },
+    });
 
     res.sendStatus(200);
 });

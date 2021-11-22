@@ -88,11 +88,11 @@ model PasswordReset {
 }
 
 model Badge {
-  id       Int    @id @default(autoincrement())
-  badgeId  Int    @default(autoincrement())
-  name String
+  id          Int    @id @default(autoincrement())
+  badgeId     Int    @default(autoincrement())
+  name        String
   description String
-  tier     Int    @default(0)
-  imageUrl String
-  owners   User[] @relation("AvailableBadges")
+  tier        Int    @default(0)
+  imageUrl    String
+  owners      User[] @relation("AvailableBadges")
 }

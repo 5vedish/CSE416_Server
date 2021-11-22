@@ -14,19 +14,19 @@ meRouter.get('/', async (req, res) => {
     return res.json(await getUserById(req.session.user.id));
 });
 
-// meRouter.get('/platform', async (req, res) => {
-//     if (!req.session) {
-//         return res.sendStatus(401);
-//     }
-//     const platform = await db.platform.findFirst({
-//         where: { ownerId: req.session.user.id },
-//     });
-//     console.log(platform);
-//     if (!platform) {
-//         return res.sendStatus(404);
-//     }
-//     return res.json({ platformId: platform.id });
-// });
+meRouter.get('/platform', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const platform = await db.platform.findFirst({
+        where: { ownerId: req.session.user.id },
+    });
+    console.log(platform);
+    if (!platform) {
+        return res.sendStatus(404);
+    }
+    return res.json({ platformId: platform.id });
+});
 
 meRouter.get('/rewards', async (req, res) => {
     if (!req.session) {
@@ -101,6 +101,7 @@ meRouter.patch('/', async (req, res) => {
 });
 
 meRouter.get('/rewards', async (req, res) => {
+    console.log('GETTING REWARDS');
     if (!req.session) {
         return res.sendStatus(401);
     }
@@ -111,7 +112,7 @@ meRouter.get('/rewards', async (req, res) => {
                 id: req.session?.user.id,
             },
             select: {
-                badges: true,
+                // badges: true,
             },
         }),
     );

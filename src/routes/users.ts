@@ -9,6 +9,8 @@ const getUserById = async (id: number) => {
             id: id,
         },
         select: {
+            id: true,
+            likedPlatforms: true,
             displayName: true,
             currency: true,
             experience: true,

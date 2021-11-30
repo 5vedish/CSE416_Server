@@ -125,7 +125,7 @@ platformsRouter.get('/:id', async (req, res) => {
         owner: platform.owner.displayName,
         quizzes: platform.quizzes,
         rating: platform.rating,
-        likes: platform.likers,
+        likers: platform.likers,
     });
 });
 

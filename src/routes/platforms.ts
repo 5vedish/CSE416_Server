@@ -49,6 +49,7 @@ platformsRouter.get('/', async (req, res) => {
         select: {
             id: true,
             rating: true,
+            likers: true,
             title: true,
             owner: {
                 select: {
@@ -96,6 +97,7 @@ platformsRouter.get('/:id', async (req, res) => {
             id: numericId,
         },
         include: {
+            likers: true,
             owner: {
                 select: {
                     displayName: true,
@@ -123,6 +125,7 @@ platformsRouter.get('/:id', async (req, res) => {
         owner: platform.owner.displayName,
         quizzes: platform.quizzes,
         rating: platform.rating,
+        likes: platform.likers,
     });
 });
 

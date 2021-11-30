@@ -24,6 +24,7 @@ model User {
   level            Int
   experience       Int
   badges           Badge[]         @relation("AvailableBadges")
+  likedPlatforms   Platform[]      @relation("LikedPlatforms")
 }
 
 model Session {
@@ -40,6 +41,7 @@ model Platform {
   owner   User   @relation("OwnedPlatforms", fields: [ownerId], references: [id])
   ownerId Int
   rating  Int    @default(0)
+  likers  User[] @relation("LikedPlatforms")
 }
 
 enum Difficulty {

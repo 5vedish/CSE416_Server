@@ -212,6 +212,48 @@ platformsRouter.put('/:id/ratings', async (req, res) => {
     res.sendStatus(200);
 });
 
+platformsRouter.put('/:platform_id/likes', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const { user } = req.session;
+    const platformId = parseInt(req.params.platform_id);
+    await db.platform.update({
+        where: {
+            id: platformId,
+        },
+        data: {
+            likers: { connect: [{ id: user.id }] },
+        },
+        include: {
+            likers: true,
+        },
+    });
+
+    res.sendStatus(200);
+});
+
+platformsRouter.delete('/:platform_id/likes', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const { user } = req.session;
+    const platformId = parseInt(req.params.platform_id);
+    await db.platform.update({
+        where: {
+            id: platformId,
+        },
+        data: {
+            likers: { disconnect: [{ id: user.id }] },
+        },
+        include: {
+            likers: true,
+        },
+    });
+
+    res.sendStatus(200);
+});
+
 platformsRouter.delete('/:id', async (req, res) => {
     if (!req.session) {
         return res.sendStatus(401);

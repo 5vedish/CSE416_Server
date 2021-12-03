@@ -113,6 +113,19 @@ platformsRouter.get('/:id', async (req, res) => {
                     questions: true,
                 },
             },
+            comments: {
+                select: {
+                    id: true,
+                    author: {
+                        select: { id: true, displayName: true },
+                    },
+                    content: true,
+                    createdAt: true,
+                },
+                orderBy: {
+                    createdAt: 'desc',
+                },
+            },
         },
     });
     if (!platform) {
@@ -133,6 +146,7 @@ platformsRouter.get('/:id', async (req, res) => {
         averageRating: platform.averageRating,
         likers: platform.likers,
         yourRating: userRating ? userRating.rating : 0,
+        comments: platform.comments,
     });
 });
 

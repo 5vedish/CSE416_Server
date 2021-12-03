@@ -16,6 +16,7 @@ import { quizzesRouter } from './routes/quizzes';
 import { quizAttemptsRouter } from './routes/quizAttempts';
 import { rewardsRouter } from './routes/rewards';
 import { commentsRouter } from './routes/comments';
+import { userStatsRouter } from './routes/userStatistics';
 
 const app = express();
 let port = process.env.PORT || 8080; // default port to listen
@@ -44,6 +45,7 @@ app.use('/quizzes', quizzesRouter);
 app.use('/attempts', quizAttemptsRouter);
 app.use('/rewards', rewardsRouter);
 app.use('/comments', commentsRouter);
+app.use('/statistics', userStatsRouter);
 
 app.use(errHandler);
 

@@ -19,7 +19,7 @@ const getUserById = async (id: number) => {
                 select: {
                     id: true,
                     title: true,
-                    ratings: true,
+                    averageRating: true,
                 },
             },
             badges: true,
@@ -135,10 +135,14 @@ userRouter.put('/rewards/:id', async (req, res) => {
 
     if (user) {
         const numCurrency = parseInt(currency) + user.currency;
-        const numExp = parseInt(experience) + user.experience;
-        const level = user.level;
-        const expThreshold = (user.level + 1) * 10000;
-        const levelUp = numExp >= expThreshold ? true : false;
+
+        let numExp = parseInt(experience) + user.experience;
+        let level = user.level;
+
+        while (numExp >= (level + 1) * 1000) {
+            numExp -= (level + 1) * 1000;
+            level += 1;
+        }
 
         console.log(numCurrency, ',', numExp);
 
@@ -147,9 +151,9 @@ userRouter.put('/rewards/:id', async (req, res) => {
                 id: userId,
             },
             data: {
-                level: levelUp ? user.level + 1 : user.level,
+                level: level,
                 currency: numCurrency,
-                experience: levelUp ? numExp % expThreshold : numExp,
+                experience: numExp,
             },
         });
     }

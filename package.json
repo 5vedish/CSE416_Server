@@ -1,8 +1,8 @@
 {
     "main": "dist/index.js",
     "scripts": {
-        "build": "npx prisma db push",
-        "postinstall": "npx prisma db push && tsc",
+        "build": "npx prisma db push --accept-data-loss",
+        "postinstall": "npx prisma db push --accept-data-loss && tsc",
         "start": "node dist/scripts/deleteBadges.js && node dist/scripts/populateBadges.js && NODE_ENV=production node dist/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev-w": "npx ts-node-dev --respawn --pretty --transpile-only src/index.ts",

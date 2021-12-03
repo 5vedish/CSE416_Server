@@ -124,18 +124,42 @@ meRouter.put('/rewards', async (req, res) => {
     }
     const { user } = req.session;
     const { badgeId } = req.body;
+    console.log(req.body);
     let badgeIdValue = parseInt(badgeId);
-    await db.badge.update({
+
+    const badge = await db.badge.findFirst({
         where: {
-            id: badgeIdValue,
-        },
-        data: {
-            owners: { connect: [{ id: user.id }] },
-        },
-        include: {
-            owners: true,
+            badgeId: badgeIdValue,
         },
     });
+
+    if (badge) {
+        if (user.currency < badge.cost) {
+            res.sendStatus(400);
+            return;
+        }
+
+        await db.badge.update({
+            where: {
+                id: badgeIdValue,
+            },
+            data: {
+                owners: { connect: [{ id: user.id }] },
+            },
+            include: {
+                owners: true,
+            },
+        });
+
+        await db.user.updateMany({
+            where: {
+                id: user.id,
+            },
+            data: {
+                currency: user.currency - badge.cost,
+            },
+        });
+    }
 
     res.sendStatus(200);
 });

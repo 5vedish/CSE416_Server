@@ -96,5 +96,6 @@ model Badge {
   description String
   tier        Int    @default(0)
   imageUrl    String
+  cost        Int
   owners      User[] @relation("AvailableBadges")
 }

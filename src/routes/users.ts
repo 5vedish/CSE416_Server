@@ -134,10 +134,11 @@ userRouter.put('/rewards/:id', async (req, res) => {
     console.log(req.body);
 
     if (user) {
-        console.log('hit');
-        console.log(currency, ',', experience);
         const numCurrency = parseInt(currency) + user.currency;
         const numExp = parseInt(experience) + user.experience;
+        const level = user.level;
+        const expThreshold = (user.level + 1) * 10000;
+        const levelUp = numExp >= expThreshold ? true : false;
 
         console.log(numCurrency, ',', numExp);
 
@@ -146,8 +147,9 @@ userRouter.put('/rewards/:id', async (req, res) => {
                 id: userId,
             },
             data: {
+                level: levelUp ? user.level + 1 : user.level,
                 currency: numCurrency,
-                experience: numExp,
+                experience: levelUp ? numExp % expThreshold : numExp,
             },
         });
     }

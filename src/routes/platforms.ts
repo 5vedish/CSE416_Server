@@ -1,3 +1,4 @@
+import { Prisma } from '.prisma/client';
 import express from 'express';
 import { parse } from 'path/posix';
 import { db } from '../db';
@@ -48,7 +49,7 @@ platformsRouter.get('/', async (req, res) => {
         },
         select: {
             id: true,
-            rating: true,
+            averageRating: true,
             likers: true,
             title: true,
             owner: {
@@ -90,11 +91,11 @@ platformsRouter.get('/:id', async (req, res) => {
         return res.sendStatus(401);
     }
 
-    const numericId = parseInt(req.params.id);
+    const platformId = parseInt(req.params.id);
 
     const platform = await db.platform.findFirst({
         where: {
-            id: numericId,
+            id: platformId,
         },
         include: {
             likers: true,
@@ -114,43 +115,24 @@ platformsRouter.get('/:id', async (req, res) => {
             },
         },
     });
-
     if (!platform) {
         return res.sendStatus(404);
     }
 
+    const userRating = await db.rating.findFirst({
+        where: {
+            userId: req.session.user.id,
+            platformId,
+        },
+    });
     res.json({
         id: platform.id,
         title: platform.title,
         owner: platform.owner.displayName,
         quizzes: platform.quizzes,
-        rating: platform.rating,
+        averageRating: platform.averageRating,
         likers: platform.likers,
-    });
-});
-
-platformsRouter.get('/:id/ratings', async (req, res) => {
-    if (!req.session) {
-        return res.sendStatus(401);
-    }
-
-    const { user } = req.session;
-    const numericId = parseInt(req.params.id);
-
-    const platform = await db.platform.findFirst({
-        where: {
-            id: numericId,
-            ownerId: user.id,
-        },
-    });
-    console.log(platform);
-
-    if (!platform) {
-        return res.sendStatus(404);
-    }
-
-    res.json({
-        rating: platform.rating,
+        yourRating: userRating ? userRating.rating : 0,
     });
 });
 
@@ -190,24 +172,49 @@ platformsRouter.put('/:id/ratings', async (req, res) => {
     }
 
     const { user } = req.session;
-    const numericId = parseInt(req.params.id);
+    const platformId = parseInt(req.params.id);
     const { rating } = req.body;
     const ratingValue = parseInt(rating);
-    console.log(ratingValue);
-    await db.platform
-        .updateMany({
-            where: {
-                id: numericId,
-            },
-            data: {
-                rating: ratingValue,
-            },
-        })
-        .catch((e: any) => {
-            console.log(e);
-            res.sendStatus(404);
-            return;
-        });
+
+    const platform = await db.platform.findUnique({
+        where: { id: platformId },
+    });
+    if (!platform) {
+        return res.sendStatus(404);
+    }
+
+    await db.rating.upsert({
+        where: {
+            id: `${platformId}_${user.id}`,
+        },
+        update: {
+            rating: ratingValue,
+        },
+        create: {
+            id: `${platformId}_${user.id}`,
+            rating: ratingValue,
+            platformId: platformId,
+            userId: user.id,
+        },
+    });
+
+    const aggregations = await db.rating.aggregate({
+        where: {
+            platformId,
+        },
+        _avg: {
+            rating: true,
+        },
+    });
+
+    console.log(aggregations);
+
+    await db.platform.update({
+        where: { id: platformId },
+        data: {
+            averageRating: aggregations._avg.rating ?? 0,
+        },
+    });
 
     res.sendStatus(200);
 });

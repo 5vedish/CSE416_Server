@@ -25,6 +25,8 @@ model User {
   experience       Int
   badges           Badge[]         @relation("AvailableBadges")
   likedPlatforms   Platform[]      @relation("LikedPlatforms")
+  ratings          Rating[]        @relation("RatedPlatforms")
+
 }
 
 model Session {
@@ -35,13 +37,14 @@ model Session {
 }
 
 model Platform {
-  id      Int    @id @default(autoincrement())
-  title   String
-  quizzes Quiz[] @relation("Quizzes")
-  owner   User   @relation("OwnedPlatforms", fields: [ownerId], references: [id])
-  ownerId Int
-  rating  Int    @default(0)
-  likers  User[] @relation("LikedPlatforms")
+  id            Int      @id @default(autoincrement())
+  title         String
+  quizzes       Quiz[]   @relation("Quizzes")
+  owner         User     @relation("OwnedPlatforms", fields: [ownerId], references: [id])
+  ownerId       Int
+  averageRating Float    @default(0)
+  ratings       Rating[]
+  likers        User[]   @relation("LikedPlatforms")
 }
 
 enum Difficulty {
@@ -98,4 +101,13 @@ model Badge {
   imageUrl    String
   cost        Int
   owners      User[] @relation("AvailableBadges")
+}
+
+model Rating {
+  id         String   @id
+  user       User     @relation("RatedPlatforms", fields: [userId], references: [id])
+  userId     Int
+  rating     Float
+  platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  platformId Int
 }

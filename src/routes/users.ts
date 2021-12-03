@@ -19,7 +19,7 @@ const getUserById = async (id: number) => {
                 select: {
                     id: true,
                     title: true,
-                    rating: true,
+                    ratings: true,
                 },
             },
             badges: true,

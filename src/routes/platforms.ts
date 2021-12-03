@@ -207,6 +207,8 @@ platformsRouter.put('/:id/ratings', async (req, res) => {
         },
     });
 
+    console.log(aggregations);
+
     await db.platform.update({
         where: { id: platformId },
         data: {

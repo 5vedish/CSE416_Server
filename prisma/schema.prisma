@@ -46,6 +46,7 @@ model Platform {
   averageRating Float    @default(0)
   ratings       Rating[]
   likers        User[]   @relation("LikedPlatforms")
+  comments      Comment[]
 }
 
 enum Difficulty {
@@ -100,7 +101,7 @@ model Badge {
   description String
   tier        Int    @default(0)
   imageUrl    String
-  cost        Int
+  cost        Int    @default(100)
   owners      User[] @relation("AvailableBadges")
 }
 

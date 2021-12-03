@@ -36,7 +36,7 @@ userStatsRouter.get('/', async (req, res) => {
         _count: true,
     });
 
-    let diffs = { e: -1, m: -1, h: -1 };
+    let diffs = { e: 0, m: 0, h: 0 };
 
     diff.map((difficulty) => {
         switch (difficulty.difficulty) {

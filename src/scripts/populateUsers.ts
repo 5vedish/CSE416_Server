@@ -72,6 +72,54 @@ const populateUsers = async () => {
             },
         },
     });
+
+    await db.platform.create({
+        data: {
+            title: 'Marvel Cinematic Universe',
+            ownerId: 101,
+            quizzes: {
+                create: [
+                    {
+                        title: 'Infinity War',
+                        difficulty: 'EASY',
+                        maxTime: 60,
+                        questions: {
+                            create: [
+                                {
+                                    question:
+                                        'Where does the Collector reside?',
+                                    choices: [
+                                        'Knowhere',
+                                        'Nidavellir',
+                                        'Earth',
+                                        'Wakanda',
+                                    ],
+                                    correctChoice: 0,
+                                },
+                                {
+                                    question:
+                                        'Who did Captain America leave his shield to?',
+                                    choices: [
+                                        'Sam Wilson',
+                                        'Bucky Barnes',
+                                        'Stan Lee',
+                                        'Jack Kirby',
+                                    ],
+                                    correctChoice: 0,
+                                },
+                                {
+                                    question:
+                                        'Which direction did Peter Quill tell Gamora she should have gone?',
+                                    choices: ['Left', 'Right', 'Up', 'Down'],
+                                    correctChoice: 0,
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    });
 };
 
 populateUsers();

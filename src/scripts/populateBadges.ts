@@ -21,6 +21,24 @@ const populateBadges = async () => {
                 imageUrl: '/badges/green.png',
                 cost: 250,
             },
+            {
+                name: 'Blue Orb',
+                description: 'This orb is blue.',
+                imageUrl: '/badges/bluecirc.png',
+                cost: 10000,
+            },
+            {
+                name: 'Red Orb',
+                description: 'This orb is red.',
+                imageUrl: '/badges/redcirc.png',
+                cost: 5000,
+            },
+            {
+                name: 'The Orb',
+                description: 'This is the orb.',
+                imageUrl: '/badges/orbis.png',
+                cost: 2500,
+            },
         ],
     });
 };

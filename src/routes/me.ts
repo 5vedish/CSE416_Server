@@ -185,7 +185,7 @@ meRouter.post('/rewards', async (req, res) => {
             badgeId: badgeIdValue,
             name: badgeName,
             description: `Platform ${badgeId}`,
-            imageUrl: '/badges/blue.png',
+            imageUrl: '/badges/plat.png',
         },
     });
 

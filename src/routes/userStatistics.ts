@@ -32,6 +32,7 @@ userStatsRouter.get('/', async (req, res) => {
     });
 
     const diff = await db.quizAttempt.groupBy({
+        where: { userId: user.id },
         by: ['difficulty'],
         _count: true,
     });

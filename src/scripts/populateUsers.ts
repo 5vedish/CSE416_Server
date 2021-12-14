@@ -13,6 +13,15 @@ const populateUsers = async () => {
                 level: 1,
                 experience: 0,
             },
+            {
+                id: 101,
+                displayName: 'Marvelous',
+                email: 'captain@marvelous.com',
+                password: await hashPassword('strongestAvenger'),
+                currency: 10000,
+                level: 5,
+                experience: 10000,
+            },
         ],
     });
 

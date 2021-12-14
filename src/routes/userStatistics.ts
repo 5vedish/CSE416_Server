@@ -1,6 +1,7 @@
 import { prisma } from '@prisma/client';
 import express from 'express';
 import { db } from '../db';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
 
 const userStatsRouter = express.Router();
 
@@ -24,7 +25,7 @@ userStatsRouter.get('/', async (req, res) => {
         where: {
             id: user.id,
         },
-        include: {
+        select: {
             _count: {
                 select: { quizAttempts: true },
             },
@@ -57,10 +58,29 @@ userStatsRouter.get('/', async (req, res) => {
 
     if (lifetimeQuizzes) console.log(lifetimeQuizzes._count);
 
+    const quizTimes = await db.quizAttempt.findMany({
+        where: { userId: user.id },
+        select: {
+            startTime: true,
+            endTime: true,
+        },
+    });
+
+    let totalTimeSpent = 0;
+    quizTimes.map((times) => {
+        totalTimeSpent += differenceInSeconds(times.endTime, times.startTime);
+    });
+
     res.json({
         averageScore: attempt_aggregations._avg ?? 0,
-        lifetimeQuizzes: lifetimeQuizzes?._count,
+        lifetimeQuizzes: lifetimeQuizzes?._count ?? 0,
         diffs: diffs,
+        timeData: {
+            totalTimeSpent: totalTimeSpent,
+            averageTimeSpent: lifetimeQuizzes?._count
+                ? totalTimeSpent / lifetimeQuizzes._count.quizAttempts
+                : 0,
+        },
     });
 });
 

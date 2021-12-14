@@ -125,11 +125,14 @@ meRouter.put('/rewards', async (req, res) => {
     const { user } = req.session;
     const { badgeId } = req.body;
     console.log(req.body);
+    // console.log(badgeId);
+    console.log('^');
     let badgeIdValue = parseInt(badgeId);
+    console.log(badgeIdValue);
 
     const badge = await db.badge.findFirst({
         where: {
-            badgeId: badgeIdValue,
+            id: badgeIdValue,
         },
     });
 
@@ -160,6 +163,31 @@ meRouter.put('/rewards', async (req, res) => {
             },
         });
     }
+
+    res.sendStatus(200);
+});
+
+meRouter.post('/rewards', async (req, res) => {
+    if (!req.session) {
+        return res.sendStatus(401);
+    }
+    const { badgeId } = req.body;
+    const { badgeName } = req.body;
+    console.log(req.body);
+    let badgeIdValue = parseInt(badgeId);
+
+    await db.badge.upsert({
+        where: {
+            id: badgeIdValue,
+        },
+        update: {},
+        create: {
+            id: badgeIdValue,
+            name: badgeName,
+            description: `Platform ${badgeId}`,
+            imageUrl: '/badges/blue.png',
+        },
+    });
 
     res.sendStatus(200);
 });

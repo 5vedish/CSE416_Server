@@ -38,14 +38,14 @@ model Session {
 }
 
 model Platform {
-  id            Int      @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   title         String
-  quizzes       Quiz[]   @relation("Quizzes")
-  owner         User     @relation("OwnedPlatforms", fields: [ownerId], references: [id])
+  quizzes       Quiz[]    @relation("Quizzes")
+  owner         User      @relation("OwnedPlatforms", fields: [ownerId], references: [id])
   ownerId       Int
-  averageRating Float    @default(0)
+  averageRating Float     @default(0)
   ratings       Rating[]
-  likers        User[]   @relation("LikedPlatforms")
+  likers        User[]    @relation("LikedPlatforms")
   comments      Comment[]
 }
 
@@ -115,11 +115,11 @@ model Rating {
 }
 
 model Comment {
-  id Int @id @default(autoincrement())
-  author        User   @relation("Comments", fields: [authorId], references: [id])
-  authorId    Int
-  content String
-  createdAt DateTime @default(now())
-  platform   Platform   @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  author     User     @relation("Comments", fields: [authorId], references: [id])
+  authorId   Int
+  content    String
+  createdAt  DateTime @default(now())
+  platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
   platformId Int
 }

@@ -102,6 +102,7 @@ platformsRouter.get('/:id', async (req, res) => {
             owner: {
                 select: {
                     displayName: true,
+                    id: true,
                 },
             },
             quizzes: {
@@ -128,6 +129,7 @@ platformsRouter.get('/:id', async (req, res) => {
             },
         },
     });
+    console.log(platform);
     if (!platform) {
         return res.sendStatus(404);
     }
@@ -142,6 +144,7 @@ platformsRouter.get('/:id', async (req, res) => {
         id: platform.id,
         title: platform.title,
         owner: platform.owner.displayName,
+        ownerId: platform.owner.id,
         quizzes: platform.quizzes,
         averageRating: platform.averageRating,
         likers: platform.likers,

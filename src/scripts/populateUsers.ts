@@ -5,7 +5,7 @@ const populateUsers = async () => {
     await db.user.createMany({
         data: [
             {
-                id: 1,
+                id: 100,
                 displayName: 'NASA',
                 email: 'qiz@nasa.com',
                 password: await hashPassword('password'),
@@ -19,7 +19,7 @@ const populateUsers = async () => {
     await db.platform.create({
         data: {
             title: 'Planets',
-            ownerId: 1,
+            ownerId: 100,
             quizzes: {
                 create: [
                     {
